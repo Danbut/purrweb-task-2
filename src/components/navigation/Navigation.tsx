@@ -29,7 +29,11 @@ export const Navigation: React.FC = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
-          <Stack.Screen name="SignUp" component={SignUp} />
+          <Stack.Screen
+            name="SignUp"
+            component={SignUp}
+            options={{headerShown: false}}
+          />
         </Stack.Navigator>
       )}
     </NavigationContainer>
