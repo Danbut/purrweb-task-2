@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text} from 'react-native';
-import {WELCOME_TEXT} from '../../../constants';
+import {WELCOME_TEXT} from '../../assets/styles/strings';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
 import {Container} from '../../ui/Container';
@@ -8,12 +8,13 @@ import {Label} from '../../ui/Label';
 import {Input} from '../../ui/Input';
 import {Button} from '../../ui/Button';
 import {ErrorMessage} from '../../ui/ErrorMessage';
-import typography from '../../assets/styles/typography';
+import styles from '../../assets/styles';
 import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
 import {selectAuthIsLoading, signUp} from '../../../state/auth/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {signUpSchema} from './validationSchemas';
 import {PRIMARY_COLOR} from '../../assets/styles/colors';
+import {SIGN_IN_SCREEN} from '../../navigation/constants';
 
 interface SignUpProps {}
 
@@ -59,9 +60,9 @@ export const SignUp: React.FC<SignUpProps> = () => {
 
   return (
     <Container padding={CONTAINER_HORIZONTAL_PADDING}>
-      <Text style={typography.header}>{WELCOME_TEXT}</Text>
+      <Text style={styles.header}>{WELCOME_TEXT}</Text>
 
-      <Text style={typography.title}>Signing up, please</Text>
+      <Text style={styles.title}>Signing up, please</Text>
 
       <Label>Your name</Label>
       <Input
@@ -93,11 +94,11 @@ export const SignUp: React.FC<SignUpProps> = () => {
             }
           });
         }}>
-        <Text style={typography.button}>Sign up</Text>
+        <Text style={styles.button}>Sign up</Text>
       </Button>
       <Text
-        style={typography.link}
-        onPress={() => navigation.navigate('SignIn')}>
+        style={styles.link}
+        onPress={() => navigation.navigate(SIGN_IN_SCREEN)}>
         Already have an account? Sign in
       </Text>
       {isLoading ? (
