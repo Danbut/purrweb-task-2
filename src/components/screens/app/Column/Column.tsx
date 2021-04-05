@@ -27,7 +27,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
   );
 };
 
-/* 
+/*
 TODO:
     1) onPress
     2) Rename state
