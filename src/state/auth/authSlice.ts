@@ -7,11 +7,13 @@ import {RootState} from '../store';
 interface AuthState {
   token: string | null;
   isLoading: boolean;
+  isPreload: boolean;
 }
 
 const initialState: AuthState = {
   token: null,
   isLoading: false,
+  isPreload: false,
 };
 
 export const signIn = createAsyncThunk(
@@ -70,8 +72,15 @@ export const authSlice = createSlice({
     builder.addCase(setToken.fulfilled, (state, action) => {
       state.token = action.payload;
     });
+    builder.addCase(getToken.pending, state => {
+      state.isPreload = true;
+    });
+    builder.addCase(getToken.rejected, state => {
+      state.isPreload = true;
+    });
     builder.addCase(getToken.fulfilled, (state, action) => {
       state.token = action.payload;
+      state.isPreload = false;
     });
     builder.addCase(removeToken.fulfilled, state => {
       state.token = null;
@@ -101,5 +110,6 @@ export const authSlice = createSlice({
 
 export const selectToken = (state: RootState) => state.auth.token;
 export const selectAuthIsLoading = (state: RootState) => state.auth.isLoading;
+export const selectAuthIsPreload = (state: RootState) => state.auth.isPreload;
 
 export default authSlice.reducer;
