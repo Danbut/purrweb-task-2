@@ -4,7 +4,7 @@ import React, {useEffect} from 'react';
 import {Button} from 'react-native';
 import {getToken, removeToken, selectToken} from '../../state/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
-import {SignUp} from '../screens';
+import {SignIn, SignUp} from '../screens/auth';
 
 const Stack = createStackNavigator();
 
@@ -29,6 +29,11 @@ export const Navigation: React.FC = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="SignUp"
             component={SignUp}

@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BUTTON_TEXT_COLOR} from './colors';
+import {BUTTON_TEXT_COLOR, SECONDARY_TEXT_COLOR} from './colors';
 import {DEFAULT_SPACE, LARGE_SPACE} from './spaces';
 
 export const PRIMARY_TEXT_SIZE = 17;
@@ -22,5 +22,11 @@ export default StyleSheet.create({
   button: {
     color: BUTTON_TEXT_COLOR,
     textAlign: 'center',
+  },
+  link: {
+    color: SECONDARY_TEXT_COLOR,
+    fontSize: SECONDARY_TEXT_SIZE,
+    textAlign: 'center',
+    textDecorationLine: 'underline',
   },
 });

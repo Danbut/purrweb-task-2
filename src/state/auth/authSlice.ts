@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {Alert} from 'react-native';
 import {Auth} from '../../services/api';
 import {storage} from '../../services/storage';
 import {RootState} from '../store';
@@ -11,12 +12,29 @@ const initialState: AuthState = {
   token: null,
 };
 
+export const signIn = createAsyncThunk(
+  'auth/signin',
+  (data: {email: string; password: string}, thunkAPI) => {
+    Auth.signIn(data.email, data.password)
+      .then(response => {
+        thunkAPI.dispatch(setToken(response.token));
+      })
+      .catch(error => {
+        Alert.alert('Error:', error.message);
+      });
+  },
+);
+
 export const signUp = createAsyncThunk(
   'auth/signup',
   (data: {name: string; email: string; password: string}, thunkAPI) => {
-    Auth.signUp(data.name, data.email, data.password).then(response => {
-      thunkAPI.dispatch(setToken(response.token));
-    });
+    Auth.signUp(data.name, data.email, data.password)
+      .then(response => {
+        thunkAPI.dispatch(setToken(response.token));
+      })
+      .catch(error => {
+        Alert.alert('Error:', error.message);
+      });
   },
 );
 
