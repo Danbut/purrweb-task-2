@@ -1,7 +1,7 @@
 import axios from 'axios';
 import {Config} from '../config';
 
-const instance = axios.create({
+const httpClient = axios.create({
   baseURL: Config.API_URL,
   headers: {
     Accept: 'application/json',
@@ -10,15 +10,27 @@ const instance = axios.create({
   timeout: 3000,
 });
 
-export const handleError = (message: string, data: any, status: number) => {
-  return Promise.reject({message, data, status});
-};
-
-instance.interceptors.response.use(
+httpClient.interceptors.response.use(
   response => response,
   ({message, response: {data, status}}) => {
     return handleError(message, data, status);
   },
 );
 
-export default instance;
+const handleError = (message: string, data: any, status: number) => {
+  return Promise.reject({message, data, status});
+};
+
+export const Auth = {
+  signUp: async (name: string, email: string, password: string) => {
+    const response = await httpClient.post('/auth/sign-up', {
+      name,
+      email,
+      password,
+    });
+
+    //TODO: error handling
+
+    return response.data;
+  },
+};

@@ -1,4 +1,5 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
+import {Auth} from '../../services/api';
 import {storage} from '../../services/storage';
 import {RootState} from '../store';
 
@@ -9,6 +10,15 @@ interface AuthState {
 const initialState: AuthState = {
   token: null,
 };
+
+export const signUp = createAsyncThunk(
+  'auth/signup',
+  (data: {name: string; email: string; password: string}, thunkAPI) => {
+    Auth.signUp(data.name, data.email, data.password).then(response => {
+      thunkAPI.dispatch(setToken(response.token));
+    });
+  },
+);
 
 export const getToken = createAsyncThunk('auth/getTokenFromStorage', () => {
   return storage.getToken();
