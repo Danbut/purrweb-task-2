@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Text} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native';
 import {WELCOME_TEXT} from '../../../constants';
-import {useAppDispatch} from '../../../state/hooks';
+import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
 import {Container} from '../../ui/Container';
 import {Label} from '../../ui/Label';
@@ -10,9 +10,10 @@ import {Button} from '../../ui/Button';
 import {ErrorMessage} from '../../ui/ErrorMessage';
 import typography from '../../assets/styles/typography';
 import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
-import {signUp} from '../../../state/auth/authSlice';
+import {selectAuthIsLoading, signUp} from '../../../state/auth/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {signUpSchema} from './validationSchemas';
+import {PRIMARY_COLOR} from '../../assets/styles/colors';
 
 interface SignUpProps {}
 
@@ -27,6 +28,7 @@ export const SignUp: React.FC<SignUpProps> = () => {
   const [formData, setFormData] = useState<SignUpForm>({} as SignUpForm);
   const [errors, setErrors] = useState<SignUpForm>({} as SignUpForm);
   const navigation = useNavigation();
+  const isLoading = useAppSelector(selectAuthIsLoading);
 
   const validate = (fields?: string[]) =>
     signUpSchema
@@ -98,6 +100,9 @@ export const SignUp: React.FC<SignUpProps> = () => {
         onPress={() => navigation.navigate('SignIn')}>
         Already have an account? Sign in
       </Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+      ) : null}
     </Container>
   );
 };

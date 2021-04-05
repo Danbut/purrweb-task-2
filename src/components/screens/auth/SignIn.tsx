@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
-import {Text} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native';
 import {WELCOME_TEXT} from '../../../constants';
-import {useAppDispatch} from '../../../state/hooks';
+import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
 import {Container} from '../../ui/Container';
 import {Label} from '../../ui/Label';
@@ -12,12 +12,12 @@ import typography from '../../assets/styles/typography';
 import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
 import {useNavigation} from '@react-navigation/native';
 import {signInSchema} from './validationSchemas';
-import {signIn} from '../../../state/auth/authSlice';
+import {selectAuthIsLoading, signIn} from '../../../state/auth/authSlice';
+import {PRIMARY_COLOR} from '../../assets/styles/colors';
 
 interface SignInProps {}
 
 interface SignInForm {
-  name: string;
   email: string;
   password: string;
 }
@@ -27,6 +27,7 @@ export const SignIn: React.FC<SignInProps> = () => {
   const [formData, setFormData] = useState<SignInForm>({} as SignInForm);
   const [errors, setErrors] = useState<SignInForm>({} as SignInForm);
   const navigation = useNavigation();
+  const isLoading = useAppSelector(selectAuthIsLoading);
 
   const validate = (fields?: string[]) =>
     signInSchema
@@ -89,6 +90,9 @@ export const SignIn: React.FC<SignInProps> = () => {
         onPress={() => navigation.navigate('SignUp')}>
         Don't have an account? Sign up
       </Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+      ) : null}
     </Container>
   );
 };
