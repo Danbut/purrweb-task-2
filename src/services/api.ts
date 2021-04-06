@@ -90,6 +90,56 @@ const columns = {
   },
 };
 
+const prayers = {
+  getPrayers: async () => {
+    const response: AxiosResponse = await httpClient.get('/prayers');
+
+    return response.data;
+  },
+
+  createPrayer: async (title: string, checked: string, columnId: number) => {
+    const response: AxiosResponse = await httpClient.post('/columns', {
+      title,
+      checked,
+      columnId,
+    });
+
+    return response.data;
+  },
+
+  getPrayerById: async (prayerId: number) => {
+    const response: AxiosResponse = await httpClient.get(
+      `/columns/${prayerId}`,
+    );
+
+    return response.data;
+  },
+
+  updatePrayerById: async (
+    prayerId: number,
+    title: string,
+    checked: string,
+  ) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/columns/${prayerId}`,
+      {
+        title,
+        checked,
+      },
+    );
+
+    return response.data;
+  },
+
+  deletePrayerById: async (prayerId: number) => {
+    const response: AxiosResponse = await httpClient.delete(
+      `/columns/${prayerId}`,
+    );
+
+    return response.data;
+  },
+};
+
 export const Api = {
   auth,
   columns,

@@ -12,10 +12,23 @@ import {PRIMARY_COLOR, PRIMARY_TEXT_COLOR} from '../assets/styles/colors';
 import {MyDesk} from '../screens/app/MyDesk';
 import {SignIn, SignUp} from '../screens/auth';
 import Plus from '../assets/icons/plus.svg';
+import Settings from '../assets/icons/settings.svg';
 import styles from '../assets/styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {DESK_SCREEN, SIGN_IN_SCREEN, SIGN_UP_SCREEN} from './constants';
+import {
+  COLUMN_SCREEN,
+  DESK_SCREEN,
+  MY_PRAYERS_TAB,
+  SIGN_IN_SCREEN,
+  SIGN_UP_SCREEN,
+  SUBSCRIBED_TAB,
+} from './constants';
 import {addColumn} from '../../state/columns/columnsSlice';
+import {Cards} from '../screens/app/Cards';
+import {IColumn} from '../../entities/Column';
+import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+
+const Tab = createMaterialTopTabNavigator();
 
 const Stack = createStackNavigator();
 
@@ -51,6 +64,25 @@ export const Navigation: React.FC = () => {
               ),
             }}
           />
+          <Stack.Screen
+            name={COLUMN_SCREEN}
+            component={() => {
+              return (
+                <Tab.Navigator>
+                  <Tab.Screen name={MY_PRAYERS_TAB} component={Cards} />
+                  <Tab.Screen name={SUBSCRIBED_TAB} component={Cards} />
+                </Tab.Navigator>
+              );
+            }}
+            options={({route}) => ({
+              headerTitle: (route.params as IColumn).title,
+              headerTintColor: PRIMARY_TEXT_COLOR,
+              headerRight: () => (
+                <TouchableOpacity style={styles.icon} onPress={() => {}}>
+                  <Settings width={24} height={24} />
+                </TouchableOpacity>
+              ),
+            })}></Stack.Screen>
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>

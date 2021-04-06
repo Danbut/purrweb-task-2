@@ -27,7 +27,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
         setIsRenaming(true);
         inputRef.current.focus();
       }}
-      onPress={() => navigation.navigate(COLUMN_SCREEN, {id: column.id})}>
+      onPress={() => navigation.navigate(COLUMN_SCREEN, column)}>
       <Input
         ref={inputRef}
         value={columnName}
