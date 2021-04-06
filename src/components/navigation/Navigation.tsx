@@ -8,7 +8,7 @@ import {
   selectToken,
 } from '../../state/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
-import {PRIMARY_COLOR} from '../assets/styles/colors';
+import {PRIMARY_COLOR, PRIMARY_TEXT_COLOR} from '../assets/styles/colors';
 import {MyDesk} from '../screens/app/MyDesk';
 import {SignIn, SignUp} from '../screens/auth';
 import Plus from '../assets/icons/plus.svg';
@@ -38,6 +38,7 @@ export const Navigation: React.FC = () => {
             component={MyDesk}
             options={{
               headerTitle: 'My Desk',
+              headerTintColor: PRIMARY_TEXT_COLOR,
               headerRight: () => (
                 <TouchableOpacity style={styles.icon} onPress={() => {}}>
                   <Plus width={16} height={16} />

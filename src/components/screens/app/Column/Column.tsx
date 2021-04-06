@@ -1,9 +1,10 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useState} from 'react';
-import {TouchableOpacity, Text} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {IColumn} from '../../../../entities/Column';
 import styles from '../../../assets/styles';
 import {COLUMN_SCREEN} from '../../../navigation/constants';
+import {Input} from '../../../ui/Input';
 
 interface ColumnProps {
   column: IColumn;
@@ -11,24 +12,14 @@ interface ColumnProps {
 
 export const Column: React.FC<ColumnProps> = ({column}) => {
   const [isRenaming, setIsRenaming] = useState<boolean>(false);
-
   const navigation = useNavigation();
 
   return (
-    // <TouchableOpacity
-    //   onLongPress={() => setIsRenaming(true)}
-    //   style={styles.column}
-    //   onPress={() => navigation.navigate(COLUMN_SCREEN, {id: column.id})}>
-    //   {isRenaming ? <Input></Input> : <Text>fss</Text>}
-    // </TouchableOpacity>
-    <TouchableOpacity style={styles.column}>
-      <Text style={styles.title}>{column.title}</Text>
+    <TouchableOpacity
+      style={styles.column}
+      onLongPress={() => setIsRenaming(true)}
+      onPress={() => navigation.navigate(COLUMN_SCREEN, {id: column.id})}>
+      <Input value={column.title} editable={isRenaming} borderRadius={4} bold />
     </TouchableOpacity>
   );
 };
-
-/* 
-TODO:
-    1) onPress
-    2) Rename state
-*/

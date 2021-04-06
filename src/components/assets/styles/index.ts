@@ -1,9 +1,10 @@
 import {StyleSheet} from 'react-native';
-import {BUTTON_TEXT_COLOR, SECONDARY_TEXT_COLOR} from './colors';
+import {BUTTON_TEXT_COLOR, LINE_COLOR, SECONDARY_TEXT_COLOR} from './colors';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   DEFAULT_SPACE,
   LARGE_SPACE,
+  SMALL_SPACE,
 } from './spaces';
 import {
   LARGE_TEXT_SIZE,
@@ -36,5 +37,7 @@ export default StyleSheet.create({
   icon: {
     padding: CONTAINER_HORIZONTAL_PADDING,
   },
-  column: {},
+  column: {
+    marginBottom: SMALL_SPACE,
+  },
 });

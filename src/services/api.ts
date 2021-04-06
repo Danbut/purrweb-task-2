@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import {Config} from '../config';
+import {storage} from './storage';
 
 const httpClient = axios.create({
   baseURL: Config.API_URL,
@@ -9,6 +10,21 @@ const httpClient = axios.create({
   },
   timeout: 3000,
 });
+
+httpClient.interceptors.request.use(
+  async config => {
+    const token = await storage.getToken();
+    config.headers = {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    };
+    return config;
+  },
+  error => {
+    Promise.reject(error);
+  },
+);
 
 httpClient.interceptors.response.use(
   response => response,
@@ -21,7 +37,7 @@ const handleError = (args: {message: string; data?: any; status?: number}) => {
   return Promise.reject(args);
 };
 
-export const Auth = {
+const auth = {
   signUp: async (name: string, email: string, password: string) => {
     const response = await httpClient.post('/auth/sign-up', {
       name,
@@ -47,4 +63,17 @@ export const Auth = {
 
     return response.data;
   },
+};
+
+const columns = {
+  getColumns: async () => {
+    const response: AxiosResponse = await httpClient.get('/columns');
+
+    return response.data;
+  },
+};
+
+export const Api = {
+  auth,
+  columns,
 };
