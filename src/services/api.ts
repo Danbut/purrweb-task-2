@@ -81,6 +81,13 @@ const columns = {
 
     return response.data;
   },
+  addColumn: async () => {
+    const response: AxiosResponse = await httpClient.post('/columns', {
+      title: '',
+    });
+
+    return response.data;
+  },
 };
 
 export const Api = {
