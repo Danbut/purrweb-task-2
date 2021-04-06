@@ -1,5 +1,6 @@
 import React from 'react';
 import {TextInputProps} from 'react-native';
+import {TextInput} from 'react-native';
 import styled from 'styled-components/native';
 import {
   LINE_COLOR,
@@ -12,6 +13,7 @@ import {PRIMARY_TEXT_SIZE} from '../../assets/styles/typography';
 interface InputProps extends TextInputProps {
   borderRadius?: number;
   bold?: boolean;
+  ref?: React.ForwardedRef<TextInput>;
 }
 
 const StyledTextInput = styled.TextInput<InputProps>`
@@ -23,13 +25,14 @@ const StyledTextInput = styled.TextInput<InputProps>`
   ${({bold}) => (bold ? 'font-weight: 500;' : '')}
 `;
 
-export const Input: React.FC<InputProps> = props => {
+export const Input: React.FC<InputProps> = React.forwardRef((props, ref) => {
   return (
     <StyledTextInput
+      ref={ref}
       {...props}
       selectionColor={props?.selectionColor || PRIMARY_COLOR}
       placeholderTextColor={
         props?.placeholderTextColor || SECONDARY_TEXT_COLOR
       }></StyledTextInput>
   );
-};
+});

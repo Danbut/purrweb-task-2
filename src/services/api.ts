@@ -71,6 +71,16 @@ const columns = {
 
     return response.data;
   },
+  renameColumn: async (columnId: number, title: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/columns/${columnId}`,
+      {
+        title,
+      },
+    );
+
+    return response.data;
+  },
 };
 
 export const Api = {
