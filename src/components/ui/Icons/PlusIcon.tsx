@@ -5,6 +5,7 @@ import {Path, Svg} from 'react-native-svg';
 interface PlusIconProps extends ViewProps {
   width?: number;
   height?: number;
+  onPress?: () => void;
 }
 
 export const PlusIcon: React.FC<PlusIconProps> = props => (
@@ -13,7 +14,8 @@ export const PlusIcon: React.FC<PlusIconProps> = props => (
     height={props.height}
     {...props}
     viewBox="0 0 16 16"
-    fill="none">
+    fill="none"
+    onPress={props.onPress}>
     <Path
       fill-rule="evenodd"
       clip-rule="evenodd"
