@@ -8,12 +8,9 @@ import {
   selectToken,
 } from '../../state/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
-import {PRIMARY_COLOR, PRIMARY_TEXT_COLOR} from '../assets/styles/colors';
 import {MyDesk} from '../screens/app/MyDesk';
 import {SignIn, SignUp} from '../screens/auth';
-import Plus from '../assets/icons/plus.svg';
-import Settings from '../assets/icons/settings.svg';
-import styles from '../assets/styles';
+import {styles, PRIMARY_COLOR, PRIMARY_TEXT_COLOR} from '../../assets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   COLUMN_SCREEN,
@@ -27,6 +24,7 @@ import {addColumn} from '../../state/columns/columnsSlice';
 import {Cards} from '../screens/app/Cards';
 import {IColumn} from '../../entities/Column';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
+import {PlusIcon, SettingsIcon} from '../ui';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -59,7 +57,7 @@ export const Navigation: React.FC = () => {
                   onPress={() => {
                     dispatch(addColumn());
                   }}>
-                  <Plus width={16} height={16} />
+                  <PlusIcon width={16} height={16} />
                 </TouchableOpacity>
               ),
             }}
@@ -79,7 +77,7 @@ export const Navigation: React.FC = () => {
               headerTintColor: PRIMARY_TEXT_COLOR,
               headerRight: () => (
                 <TouchableOpacity style={styles.icon} onPress={() => {}}>
-                  <Settings width={24} height={24} />
+                  <SettingsIcon width={24} height={24} />
                 </TouchableOpacity>
               ),
             })}></Stack.Screen>

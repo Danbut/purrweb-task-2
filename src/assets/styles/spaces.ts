@@ -1,4 +1,3 @@
-// ? not sure in spaces basically
 export const CONTAINER_HORIZONTAL_PADDING = 15;
 export const DEFAULT_SPACE = 21;
 export const SMALL_SPACE = 7;

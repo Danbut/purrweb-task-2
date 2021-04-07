@@ -1,5 +1,5 @@
 // import React from 'react';
-// import styles from '../../../assets/styles';
+// import {styles} from '../../../../assets';
 
 // interface PrayerProps {
 //   prayer: IPrayer;

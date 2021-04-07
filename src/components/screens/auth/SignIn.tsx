@@ -1,58 +1,44 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ActivityIndicator, Text} from 'react-native';
-import {WELCOME_TEXT} from '../../assets/styles/strings';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
-import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
-import {Container} from '../../ui/Container';
-import {Label} from '../../ui/Label';
-import {Input} from '../../ui/Input';
-import {Button} from '../../ui/Button';
-import {ErrorMessage} from '../../ui/ErrorMessage';
-import styles from '../../assets/styles';
-import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
+import {Container, Input, Button} from '../../ui';
+import {
+  styles,
+  PRIMARY_COLOR,
+  CONTAINER_HORIZONTAL_PADDING,
+  WELCOME_TEXT,
+} from '../../../assets';
 import {useNavigation} from '@react-navigation/native';
 import {signInSchema} from './validationSchemas';
 import {selectAuthIsLoading, signIn} from '../../../state/auth/authSlice';
-import {PRIMARY_COLOR} from '../../assets/styles/colors';
 import {SIGN_UP_SCREEN} from '../../navigation/constants';
+import {useForm, Controller} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 interface SignInProps {}
 
-interface SignInForm {
+type SignInForm = {
   email: string;
   password: string;
-}
+};
 
 export const SignIn: React.FC<SignInProps> = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<SignInForm>({
+    resolver: yupResolver(signInSchema),
+  });
+
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<SignInForm>({} as SignInForm);
-  const [errors, setErrors] = useState<SignInForm>({} as SignInForm);
-  const navigation = useNavigation();
+  const onSubmit = (data: SignInForm) => {
+    dispatch(signIn(data));
+  };
+
   const isLoading = useAppSelector(selectAuthIsLoading);
 
-  const validate = (fields?: string[]) =>
-    signInSchema
-      .validate(formData, {abortEarly: false})
-      .then(valid => {
-        setErrors({} as SignInForm);
-        if (valid) {
-          return valid;
-        }
-      })
-      .catch(err => {
-        const errorsObject = (getErrorsObjectFromYup(
-          fields ?? ['email', 'password'],
-          err,
-        ) as unknown) as SignInForm;
-        setErrors(errorsObject);
-      });
-
-  const enterEmailHandler = (text: string) => {
-    setFormData({...formData, email: text});
-  };
-  const enterPasswordHandler = (text: string) => {
-    setFormData({...formData, password: text});
-  };
+  const navigation = useNavigation();
 
   return (
     <Container padding={CONTAINER_HORIZONTAL_PADDING}>
@@ -60,29 +46,38 @@ export const SignIn: React.FC<SignInProps> = () => {
 
       <Text style={styles.title}>Signing in, please</Text>
 
-      <Label>Email</Label>
-      <Input
-        placeholder="Enter your email"
-        onBlur={() => validate(['email'])}
-        onChangeText={enterEmailHandler}></Input>
-      <ErrorMessage>{errors?.email}</ErrorMessage>
+      <Controller
+        control={control}
+        render={({field: {value, onChange, ref}}) => (
+          <Input
+            label="Email"
+            ref={ref}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your email"
+            errors={{message: errors?.email?.message}}
+          />
+        )}
+        name="email"
+      />
 
-      <Label>Password</Label>
-      <Input
-        placeholder="Enter your password"
-        onBlur={() => validate()}
-        onChangeText={enterPasswordHandler}
-        secureTextEntry={true}></Input>
-      <ErrorMessage>{errors?.password}</ErrorMessage>
+      <Controller
+        control={control}
+        render={({field: {value, onChange, ref}}) => (
+          <Input
+            label="Password"
+            ref={ref}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your password"
+            secureTextEntry={true}
+            errors={{message: errors?.password?.message}}
+          />
+        )}
+        name="password"
+      />
 
-      <Button
-        onPress={() => {
-          validate().then(isValid => {
-            if (isValid) {
-              dispatch(signIn(formData));
-            }
-          });
-        }}>
+      <Button onPress={handleSubmit(onSubmit)}>
         <Text style={styles.button}>Sign in</Text>
       </Button>
 

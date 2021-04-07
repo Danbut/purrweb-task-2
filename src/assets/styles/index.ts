@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {BUTTON_TEXT_COLOR, LINE_COLOR, SECONDARY_TEXT_COLOR} from './colors';
+import {BUTTON_TEXT_COLOR, SECONDARY_TEXT_COLOR} from './colors';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   DEFAULT_SPACE,
@@ -12,7 +12,7 @@ import {
   SECONDARY_TEXT_SIZE,
 } from './typography';
 
-export default StyleSheet.create({
+export const styles = StyleSheet.create({
   header: {
     fontSize: LARGE_TEXT_SIZE,
     alignSelf: 'center',
@@ -40,4 +40,12 @@ export default StyleSheet.create({
   column: {
     marginBottom: SMALL_SPACE,
   },
+  inputIcon: {
+    marginRight: CONTAINER_HORIZONTAL_PADDING,
+  },
 });
+
+export * from './colors';
+export * from './spaces';
+export * from './strings';
+export * from './typography';

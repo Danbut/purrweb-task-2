@@ -1,6 +1,9 @@
 import React from 'react';
-import {View} from 'react-native';
-import SwipeableItem from 'react-native-swipeable-item';
+// import {FlatList} from 'react-native-gesture-handler';
+// import SwipeableItem from 'react-native-swipeable-item';
+import {CONTAINER_HORIZONTAL_PADDING} from '../../../assets';
+import {Container} from '../../ui';
+import {Input} from '../../ui';
 
 interface CardsProps {}
 
@@ -29,5 +32,9 @@ interface CardsProps {}
 // };
 
 export const Cards: React.FC<CardsProps> = () => {
-  return <View></View>;
+  return (
+    <Container padding={CONTAINER_HORIZONTAL_PADDING}>
+      <Input placeholder="Add a prayer..." icon></Input>
+    </Container>
+  );
 };
