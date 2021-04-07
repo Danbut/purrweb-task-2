@@ -15,6 +15,7 @@ import Plus from '../assets/icons/plus.svg';
 import styles from '../assets/styles';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {DESK_SCREEN, SIGN_IN_SCREEN, SIGN_UP_SCREEN} from './constants';
+import {addColumn} from '../../state/columns/columnsSlice';
 
 const Stack = createStackNavigator();
 
@@ -40,7 +41,11 @@ export const Navigation: React.FC = () => {
               headerTitle: 'My Desk',
               headerTintColor: PRIMARY_TEXT_COLOR,
               headerRight: () => (
-                <TouchableOpacity style={styles.icon} onPress={() => {}}>
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => {
+                    dispatch(addColumn());
+                  }}>
                   <Plus width={16} height={16} />
                 </TouchableOpacity>
               ),
