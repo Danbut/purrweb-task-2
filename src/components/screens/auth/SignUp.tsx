@@ -1,34 +1,21 @@
 import React, {useState} from 'react';
-import {Text} from 'react-native';
-import {WELCOME_TEXT} from '../../constants';
-import {useAppDispatch} from '../../state/hooks';
-import {CONTAINER_HORIZONTAL_PADDING} from '../assets/styles/spaces';
-import {Container} from '../ui/Container';
-import {Label} from '../ui/Label';
-import {Input} from '../ui/Input';
-import {Button} from '../ui/Button';
-import {ErrorMessage} from '../ui/ErrorMessage';
-import typography from '../assets/styles/typography';
-import * as yup from 'yup';
-import {getErrorsObjectFromYup} from '../helpers/getErrorsObjectFromYup';
-import {signUp} from '../../state/auth/authSlice';
+import {ActivityIndicator, Text} from 'react-native';
+import {WELCOME_TEXT} from '../../../constants';
+import {useAppDispatch, useAppSelector} from '../../../state/hooks';
+import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
+import {Container} from '../../ui/Container';
+import {Label} from '../../ui/Label';
+import {Input} from '../../ui/Input';
+import {Button} from '../../ui/Button';
+import {ErrorMessage} from '../../ui/ErrorMessage';
+import typography from '../../assets/styles/typography';
+import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
+import {selectAuthIsLoading, signUp} from '../../../state/auth/authSlice';
+import {useNavigation} from '@react-navigation/native';
+import {signUpSchema} from './validationSchemas';
+import {PRIMARY_COLOR} from '../../assets/styles/colors';
 
 interface SignUpProps {}
-
-const schema = yup.object().shape({
-  name: yup.string().required('Name is required.'),
-  email: yup
-    .string()
-    .email("Email doesn't valid.")
-    .required('Email is required.'),
-  password: yup
-    .string()
-    .required('Password is required.')
-    .matches(
-      /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}/,
-      'Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters.',
-    ),
-});
 
 interface SignUpForm {
   name: string;
@@ -40,9 +27,11 @@ export const SignUp: React.FC<SignUpProps> = () => {
   const dispatch = useAppDispatch();
   const [formData, setFormData] = useState<SignUpForm>({} as SignUpForm);
   const [errors, setErrors] = useState<SignUpForm>({} as SignUpForm);
+  const navigation = useNavigation();
+  const isLoading = useAppSelector(selectAuthIsLoading);
 
   const validate = (fields?: string[]) =>
-    schema
+    signUpSchema
       .validate(formData, {abortEarly: false})
       .then(valid => {
         setErrors({} as SignUpForm);
@@ -106,6 +95,14 @@ export const SignUp: React.FC<SignUpProps> = () => {
         }}>
         <Text style={typography.button}>Sign up</Text>
       </Button>
+      <Text
+        style={typography.link}
+        onPress={() => navigation.navigate('SignIn')}>
+        Already have an account? Sign in
+      </Text>
+      {isLoading ? (
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+      ) : null}
     </Container>
   );
 };

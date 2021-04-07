@@ -1,16 +1,23 @@
 import {NavigationContainer} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
-import {Button} from 'react-native';
-import {getToken, removeToken, selectToken} from '../../state/auth/authSlice';
+import {ActivityIndicator, Button} from 'react-native';
+import {
+  getToken,
+  removeToken,
+  selectAuthIsPreload,
+  selectToken,
+} from '../../state/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
-import {SignUp} from '../screens';
+import {PRIMARY_COLOR} from '../assets/styles/colors';
+import {SignIn, SignUp} from '../screens/auth';
 
 const Stack = createStackNavigator();
 
 export const Navigation: React.FC = () => {
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
+  const isPreload = useAppSelector(selectAuthIsPreload);
 
   useEffect(() => {
     dispatch(getToken());
@@ -18,7 +25,9 @@ export const Navigation: React.FC = () => {
 
   return (
     <NavigationContainer>
-      {token ? (
+      {isPreload ? (
+        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+      ) : token ? (
         <Stack.Navigator>
           <Stack.Screen
             name="App"
@@ -29,6 +38,11 @@ export const Navigation: React.FC = () => {
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>
+          <Stack.Screen
+            name="SignIn"
+            component={SignIn}
+            options={{headerShown: false}}
+          />
           <Stack.Screen
             name="SignUp"
             component={SignUp}

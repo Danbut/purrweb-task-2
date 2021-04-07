@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, {AxiosResponse} from 'axios';
 import {Config} from '../config';
 
 const httpClient = axios.create({
@@ -13,12 +13,12 @@ const httpClient = axios.create({
 httpClient.interceptors.response.use(
   response => response,
   ({message, response: {data, status}}) => {
-    return handleError(message, data, status);
+    return handleError({message, data, status});
   },
 );
 
-const handleError = (message: string, data: any, status: number) => {
-  return Promise.reject({message, data, status});
+const handleError = (args: {message: string; data?: any; status?: number}) => {
+  return Promise.reject(args);
 };
 
 export const Auth = {
@@ -29,7 +29,21 @@ export const Auth = {
       password,
     });
 
-    //TODO: error handling
+    if (!response.data?.token) {
+      return handleError({message: 'User is already exist.'});
+    }
+
+    return response.data;
+  },
+  signIn: async (email: string, password: string) => {
+    const response: AxiosResponse = await httpClient.post('/auth/sign-in', {
+      email,
+      password,
+    });
+
+    if (!response.data?.token) {
+      return handleError({message: 'Incorrect email or password.'});
+    }
 
     return response.data;
   },
