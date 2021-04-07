@@ -1,7 +1,9 @@
 import {createAsyncThunk, createSlice} from '@reduxjs/toolkit';
 import {Alert} from 'react-native';
-import {Auth} from '../../services/api';
+import {Column, IColumn} from '../../entities/Column';
+import {Api} from '../../services/api';
 import {storage} from '../../services/storage';
+import {setColumns} from '../columns/columnsSlice';
 import {RootState} from '../store';
 
 interface AuthState {
@@ -19,7 +21,8 @@ const initialState: AuthState = {
 export const signIn = createAsyncThunk(
   'auth/signin',
   (data: {email: string; password: string}, thunkAPI) =>
-    Auth.signIn(data.email, data.password)
+    Api.auth
+      .signIn(data.email, data.password)
       .then(response => {
         thunkAPI.dispatch(setToken(response.token));
         return response;
@@ -33,9 +36,15 @@ export const signIn = createAsyncThunk(
 export const signUp = createAsyncThunk(
   'auth/signup',
   (data: {name: string; email: string; password: string}, thunkAPI) =>
-    Auth.signUp(data.name, data.email, data.password)
+    Api.auth
+      .signUp(data.name, data.email, data.password)
       .then(response => {
         thunkAPI.dispatch(setToken(response.token));
+        thunkAPI.dispatch(
+          setColumns(
+            response.columns.map((c: IColumn) => new Column(c.id, c.title)),
+          ),
+        );
         return response;
       })
       .catch(error => {

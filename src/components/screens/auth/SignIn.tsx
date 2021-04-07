@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {ActivityIndicator, Text} from 'react-native';
-import {WELCOME_TEXT} from '../../../constants';
+import {WELCOME_TEXT} from '../../assets/styles/strings';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
 import {Container} from '../../ui/Container';
@@ -8,12 +8,13 @@ import {Label} from '../../ui/Label';
 import {Input} from '../../ui/Input';
 import {Button} from '../../ui/Button';
 import {ErrorMessage} from '../../ui/ErrorMessage';
-import typography from '../../assets/styles/typography';
+import styles from '../../assets/styles';
 import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
 import {useNavigation} from '@react-navigation/native';
 import {signInSchema} from './validationSchemas';
 import {selectAuthIsLoading, signIn} from '../../../state/auth/authSlice';
 import {PRIMARY_COLOR} from '../../assets/styles/colors';
+import {SIGN_UP_SCREEN} from '../../navigation/constants';
 
 interface SignInProps {}
 
@@ -55,9 +56,9 @@ export const SignIn: React.FC<SignInProps> = () => {
 
   return (
     <Container padding={CONTAINER_HORIZONTAL_PADDING}>
-      <Text style={typography.header}>{WELCOME_TEXT}</Text>
+      <Text style={styles.header}>{WELCOME_TEXT}</Text>
 
-      <Text style={typography.title}>Signing in, please</Text>
+      <Text style={styles.title}>Signing in, please</Text>
 
       <Label>Email</Label>
       <Input
@@ -82,12 +83,12 @@ export const SignIn: React.FC<SignInProps> = () => {
             }
           });
         }}>
-        <Text style={typography.button}>Sign in</Text>
+        <Text style={styles.button}>Sign in</Text>
       </Button>
 
       <Text
-        style={typography.link}
-        onPress={() => navigation.navigate('SignUp')}>
+        style={styles.link}
+        onPress={() => navigation.navigate(SIGN_UP_SCREEN)}>
         Don't have an account? Sign up
       </Text>
       {isLoading ? (

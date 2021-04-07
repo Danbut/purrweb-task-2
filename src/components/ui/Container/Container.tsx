@@ -6,4 +6,6 @@ interface ContainerProps {
 
 export const Container = styled.View`
   padding-horizontal: ${({padding}: ContainerProps) => padding}px;
+  height: 100%;
+  background-color: #ffffff;
 `;
