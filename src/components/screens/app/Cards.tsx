@@ -1,88 +1,120 @@
-import {useRoute} from '@react-navigation/native';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {FlatList, RefreshControl, Text} from 'react-native';
-// import {FlatList} from 'react-native-gesture-handler';
-// import SwipeableItem from 'react-native-swipeable-item';
-import {CONTAINER_HORIZONTAL_PADDING, PRIMARY_COLOR} from '../../../assets';
+import {Animated, FlatList, RefreshControl, Text, View} from 'react-native';
+import Swipeable from 'react-native-gesture-handler/Swipeable';
+import {
+  CONTAINER_HORIZONTAL_PADDING,
+  DANGER_COLOR,
+  LINE_COLOR,
+  PRIMARY_COLOR,
+  SECONDARY_TEXT_SIZE,
+} from '../../../assets';
 import {IColumn} from '../../../entities/Column';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {
   addPrayer,
   getPrayers,
-  selectPrayers,
+  selectPrayersByColumnId,
   selectPrayersIsLoading,
 } from '../../../state/prayers/prayersSlice';
-import {Container} from '../../ui';
+import {RootState} from '../../../state/store';
 import {Input} from '../../ui';
+import {Prayer} from './Prayer/Prayer';
 
-interface CardsProps {}
+interface CardsProps {
+  column: IColumn;
+}
 
-// const renderItem = () => {
-//   return (
-//     <SwipeableItem
-//       key={item.key}
-//       item={item}
-//       ref={ref => {
-//         if (ref && !this.itemRefs.get(item.key)) {
-//           this.itemRefs.set(item.key, ref);
-//         }
-//       }}
-//       onChange={({open}) => {
-//         if (open) {
-//           // Close all other open items
-//           [...this.itemRefs.entries()].forEach(([key, ref]) => {
-//             if (key !== item.key && ref) ref.close();
-//           });
-//         }
-//       }}
-//       overSwipe={20}
-//       renderUnderlayRight={this.renderUnderlayRight}
-//       snapPointsRight={[175]}></SwipeableItem>
-//   );
-// };
+//TODO: close if another open
+const renderRightActions = (_, dragX) => {
+  const trans = dragX.interpolate({
+    inputRange: [0, 50],
+    outputRange: [100, 150],
+  });
+  return (
+    <Animated.View
+      style={{
+        backgroundColor: DANGER_COLOR,
+        width: 100,
+        transform: [{translateX: trans}],
+        justifyContent: 'center',
+      }}>
+      <Animated.Text
+        style={[
+          {
+            color: '#ffffff',
+            fontSize: SECONDARY_TEXT_SIZE,
+            textAlign: 'center',
+          },
+          {
+            transform: [{translateX: trans}],
+          },
+        ]}>
+        Delete
+      </Animated.Text>
+    </Animated.View>
+  );
+};
 
 const renderItem = ({item}) => {
-  return <Text>{item.title}</Text>;
+  return (
+    <Swipeable renderRightActions={renderRightActions}>
+      <View
+        style={{
+          paddingHorizontal: CONTAINER_HORIZONTAL_PADDING,
+        }}>
+        <View
+          style={{
+            borderBottomWidth: 1,
+            borderColor: LINE_COLOR,
+          }}>
+          <Prayer prayer={item} />
+        </View>
+      </View>
+    </Swipeable>
+  );
 };
 
 type AddPrayerForm = {
   title: string;
 };
 
-export const Cards: React.FC<CardsProps> = () => {
-  //TODO: фигня с этими преерами какая-то, нужно на фронте выбирать их колонки
+export const Cards: React.FC<CardsProps> = ({column}) => {
   const {control, handleSubmit} = useForm<AddPrayerForm>();
-  const route = useRoute();
 
   const dispatch = useAppDispatch();
-  const prayers = useAppSelector(selectPrayers);
+  const prayers = useAppSelector((state: RootState) =>
+    selectPrayersByColumnId(state, column.id),
+  );
   const isLoading = useAppSelector(selectPrayersIsLoading);
 
-  useEffect(() => {
-    dispatch(getPrayers());
-  }, []);
-
   const onSubmit = (data: AddPrayerForm) => {
-    dispatch(addPrayer({...data, column: {...(route.params as IColumn)}}));
+    dispatch(addPrayer({...data, column: column.id}));
   };
 
   return (
-    <Container padding={CONTAINER_HORIZONTAL_PADDING}>
-      <Controller
-        control={control}
-        render={({field: {value, onChange, ref}}) => (
-          <Input
-            ref={ref}
-            value={value}
-            onChangeText={onChange}
-            icon
-            iconOnPress={handleSubmit(onSubmit)}
-            placeholder="Add a prayer..."
-          />
-        )}
-        name="title"
-      />
+    <View
+      style={{
+        backgroundColor: '#ffffff',
+        flex: 1,
+        paddingVertical: CONTAINER_HORIZONTAL_PADDING,
+      }}>
+      <View style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}>
+        <Controller
+          control={control}
+          render={({field: {value, onChange, ref}}) => (
+            <Input
+              ref={ref}
+              value={value}
+              onChangeText={onChange}
+              icon
+              iconOnPress={handleSubmit(onSubmit)}
+              placeholder="Add a prayer..."
+            />
+          )}
+          name="title"
+        />
+      </View>
       <FlatList
         data={prayers}
         renderItem={renderItem}
@@ -95,6 +127,6 @@ export const Cards: React.FC<CardsProps> = () => {
           />
         }
       />
-    </Container>
+    </View>
   );
 };

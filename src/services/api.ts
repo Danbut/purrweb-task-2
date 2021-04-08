@@ -98,11 +98,12 @@ const prayers = {
     return response.data;
   },
 
-  createPrayer: async (title: string, column: IColumn) => {
+  createPrayer: async (title: string, column: string) => {
     const response: AxiosResponse = await httpClient.post('/prayers', {
       title,
-      column,
+      column: +column,
       description: '',
+      checked: false,
     });
 
     return response.data;

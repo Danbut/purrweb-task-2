@@ -1,5 +1,4 @@
 import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
-import {IColumn} from '../../entities/Column';
 import {IPrayer} from '../../entities/Prayer';
 import {RootState} from '../store';
 
@@ -32,13 +31,14 @@ export const prayersSlice = createSlice({
 
 export const addPrayer: ActionCreatorWithPayload<{
   title: string;
-  column: IColumn;
+  column: string;
 }> = prayersSlice.actions.addPrayer;
 
 export const selectPrayers = (state: RootState) => state.prayers.prayers;
 export const selectPrayersIsLoading = (state: RootState) =>
   state.prayers.isLoading;
-
+export const selectPrayersByColumnId = (state: RootState, columnId: string) =>
+  state.prayers.prayers.filter(p => columnId == p.columnId);
 export const {setPrayers, getPrayers} = prayersSlice.actions;
 
 export default prayersSlice.reducer;

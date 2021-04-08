@@ -9,6 +9,7 @@ import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {PRIMARY_COLOR, CONTAINER_HORIZONTAL_PADDING} from '../../../assets';
 import {Container} from '../../ui';
 import {Column} from './Column';
+import {getPrayers} from '../../../state/prayers/prayersSlice';
 
 interface MyDeskProps {}
 
@@ -23,6 +24,7 @@ export const MyDesk: React.FC<MyDeskProps> = () => {
 
   useEffect(() => {
     dispatch(getColumns());
+    dispatch(getPrayers());
   }, []);
 
   return (

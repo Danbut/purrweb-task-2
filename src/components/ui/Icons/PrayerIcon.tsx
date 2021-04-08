@@ -1,6 +1,6 @@
 import React from 'react';
 import {ViewProps} from 'react-native';
-import {G, Mask, Path, Rect, Svg} from 'react-native-svg';
+import {EMaskUnits, G, Mask, Path, Rect, Svg} from 'react-native-svg';
 
 interface PrayerIconProps extends ViewProps {
   width?: number;
@@ -14,7 +14,14 @@ export const PrayerIcon: React.FC<PrayerIconProps> = props => (
     {...props}
     viewBox="0 0 29 23"
     fill="none">
-    <Mask id="mask0" mask-type="alpha" x="0" y="0" width="29" height="23">
+    <Mask
+      id="mask0"
+      mask-type="alpha"
+      x="0"
+      y="0"
+      width="29"
+      height="23"
+      maskUnits={'userSpaceOnUse' as EMaskUnits.USER_SPACE_ON_USE}>
       <Path
         fill-rule="evenodd"
         clip-rule="evenodd"
