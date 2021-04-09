@@ -6,10 +6,9 @@ import {
   selectColumnsIsLoading,
 } from '../../../state/columns/columnsSlice';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
-import {PRIMARY_COLOR} from '../../assets/styles/colors';
-import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
-import {Container} from '../../ui/Container';
-import {Column} from './Column/Column';
+import {PRIMARY_COLOR, CONTAINER_HORIZONTAL_PADDING} from '../../../assets';
+import {Container} from '../../ui';
+import {Column} from './Column';
 
 interface MyDeskProps {}
 

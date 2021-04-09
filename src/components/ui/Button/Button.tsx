@@ -1,9 +1,5 @@
 import styled from 'styled-components/native';
-import {
-  DEFAULT_SPACE,
-  LARGE_SPACE,
-  SMALL_SPACE,
-} from '../../assets/styles/spaces';
+import {DEFAULT_SPACE, LARGE_SPACE, SMALL_SPACE} from '../../../assets';
 
 export const Button = styled.TouchableOpacity`
   background-color: #bfb393;

@@ -5,9 +5,9 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {IColumn} from '../../../../entities/Column';
 import {renameColumn} from '../../../../state/columns/columnsSlice';
-import styles from '../../../assets/styles';
+import {styles} from '../../../../assets';
 import {COLUMN_SCREEN} from '../../../navigation/constants';
-import {Input} from '../../../ui/Input';
+import {Input} from '../../../ui';
 
 interface ColumnProps {
   column: IColumn;
@@ -27,7 +27,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
         setIsRenaming(true);
         inputRef.current.focus();
       }}
-      onPress={() => navigation.navigate(COLUMN_SCREEN, {id: column.id})}>
+      onPress={() => navigation.navigate(COLUMN_SCREEN, column)}>
       <Input
         ref={inputRef}
         value={columnName}

@@ -1,62 +1,45 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {ActivityIndicator, Text} from 'react-native';
-import {WELCOME_TEXT} from '../../assets/styles/strings';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
-import {CONTAINER_HORIZONTAL_PADDING} from '../../assets/styles/spaces';
-import {Container} from '../../ui/Container';
-import {Label} from '../../ui/Label';
-import {Input} from '../../ui/Input';
-import {Button} from '../../ui/Button';
-import {ErrorMessage} from '../../ui/ErrorMessage';
-import styles from '../../assets/styles';
-import {getErrorsObjectFromYup} from '../../helpers/getErrorsObjectFromYup';
+import {Container, Input, Button} from '../../ui';
+import {
+  styles,
+  PRIMARY_COLOR,
+  CONTAINER_HORIZONTAL_PADDING,
+  WELCOME_TEXT,
+} from '../../../assets';
 import {selectAuthIsLoading, signUp} from '../../../state/auth/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {signUpSchema} from './validationSchemas';
-import {PRIMARY_COLOR} from '../../assets/styles/colors';
 import {SIGN_IN_SCREEN} from '../../navigation/constants';
+import {Controller, useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
 
 interface SignUpProps {}
 
-interface SignUpForm {
+type SignUpForm = {
   name: string;
   email: string;
   password: string;
-}
+};
 
 export const SignUp: React.FC<SignUpProps> = () => {
+  const {
+    control,
+    handleSubmit,
+    formState: {errors},
+  } = useForm<SignUpForm>({
+    resolver: yupResolver(signUpSchema),
+  });
+
   const dispatch = useAppDispatch();
-  const [formData, setFormData] = useState<SignUpForm>({} as SignUpForm);
-  const [errors, setErrors] = useState<SignUpForm>({} as SignUpForm);
-  const navigation = useNavigation();
+  const onSubmit = (data: SignUpForm) => {
+    dispatch(signUp(data));
+  };
+
   const isLoading = useAppSelector(selectAuthIsLoading);
 
-  const validate = (fields?: string[]) =>
-    signUpSchema
-      .validate(formData, {abortEarly: false})
-      .then(valid => {
-        setErrors({} as SignUpForm);
-        if (valid) {
-          return valid;
-        }
-      })
-      .catch(err => {
-        const errorsObject = (getErrorsObjectFromYup(
-          fields ?? ['name', 'email', 'password'],
-          err,
-        ) as unknown) as SignUpForm;
-        setErrors(errorsObject);
-      });
-
-  const enterNameHandler = (text: string) => {
-    setFormData({...formData, name: text});
-  };
-  const enterEmailHandler = (text: string) => {
-    setFormData({...formData, email: text});
-  };
-  const enterPasswordHandler = (text: string) => {
-    setFormData({...formData, password: text});
-  };
+  const navigation = useNavigation();
 
   return (
     <Container padding={CONTAINER_HORIZONTAL_PADDING}>
@@ -64,38 +47,56 @@ export const SignUp: React.FC<SignUpProps> = () => {
 
       <Text style={styles.title}>Signing up, please</Text>
 
-      <Label>Your name</Label>
-      <Input
-        placeholder="Enter your name"
-        onBlur={() => validate(['name'])}
-        onChangeText={enterNameHandler}></Input>
-      <ErrorMessage>{errors?.name}</ErrorMessage>
+      <Controller
+        control={control}
+        render={({field: {value, onChange, ref}}) => (
+          <Input
+            label="Your name"
+            ref={ref}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your name"
+            errors={{message: errors?.name?.message}}
+          />
+        )}
+        name="name"
+      />
 
-      <Label>Email</Label>
-      <Input
-        placeholder="Enter your email"
-        onBlur={() => validate(['name', 'email'])}
-        onChangeText={enterEmailHandler}></Input>
-      <ErrorMessage>{errors?.email}</ErrorMessage>
+      <Controller
+        control={control}
+        render={({field: {value, onChange, ref}}) => (
+          <Input
+            label="Email"
+            ref={ref}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your email"
+            errors={{message: errors?.email?.message}}
+          />
+        )}
+        name="email"
+      />
 
-      <Label>Password</Label>
-      <Input
-        placeholder="Enter your password"
-        onBlur={() => validate()}
-        onChangeText={enterPasswordHandler}
-        secureTextEntry={true}></Input>
-      <ErrorMessage>{errors?.password}</ErrorMessage>
+      <Controller
+        control={control}
+        render={({field: {value, onChange, ref}}) => (
+          <Input
+            label="Password"
+            ref={ref}
+            value={value}
+            onChangeText={onChange}
+            placeholder="Enter your password"
+            secureTextEntry={true}
+            errors={{message: errors?.password?.message}}
+          />
+        )}
+        name="password"
+      />
 
-      <Button
-        onPress={() => {
-          validate().then(isValid => {
-            if (isValid) {
-              dispatch(signUp(formData));
-            }
-          });
-        }}>
+      <Button onPress={handleSubmit(onSubmit)}>
         <Text style={styles.button}>Sign up</Text>
       </Button>
+
       <Text
         style={styles.link}
         onPress={() => navigation.navigate(SIGN_IN_SCREEN)}>

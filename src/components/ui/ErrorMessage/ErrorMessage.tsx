@@ -1,7 +1,5 @@
 import styled from 'styled-components/native';
-import {DANGER_COLOR} from '../../assets/styles/colors';
-import {SMALL_SPACE} from '../../assets/styles/spaces';
-import {SECONDARY_TEXT_SIZE} from '../../assets/styles/typography';
+import {DANGER_COLOR, SMALL_SPACE, SECONDARY_TEXT_SIZE} from '../../../assets';
 
 export const ErrorMessage = styled.Text`
   padding: ${SMALL_SPACE}px;
