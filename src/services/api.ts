@@ -1,5 +1,6 @@
 import axios, {AxiosResponse} from 'axios';
 import {Config} from '../config';
+import {IColumn} from '../entities/Column';
 import {storage} from './storage';
 
 const httpClient = axios.create({
@@ -97,11 +98,12 @@ const prayers = {
     return response.data;
   },
 
-  createPrayer: async (title: string, checked: string, columnId: number) => {
-    const response: AxiosResponse = await httpClient.post('/columns', {
+  createPrayer: async (title: string, column: string) => {
+    const response: AxiosResponse = await httpClient.post('/prayers', {
       title,
-      checked,
-      columnId,
+      column: +column,
+      description: '',
+      checked: false,
     });
 
     return response.data;
@@ -109,7 +111,7 @@ const prayers = {
 
   getPrayerById: async (prayerId: number) => {
     const response: AxiosResponse = await httpClient.get(
-      `/columns/${prayerId}`,
+      `/prayers/${prayerId}`,
     );
 
     return response.data;
@@ -121,10 +123,11 @@ const prayers = {
     checked: string,
   ) => {
     const response: AxiosResponse = await httpClient.put(
-      `/columns/${prayerId}`,
+      `/prayers/${prayerId}`,
       {
         title,
         checked,
+        description: '',
       },
     );
 
@@ -133,7 +136,7 @@ const prayers = {
 
   deletePrayerById: async (prayerId: number) => {
     const response: AxiosResponse = await httpClient.delete(
-      `/columns/${prayerId}`,
+      `/prayers/${prayerId}`,
     );
 
     return response.data;
@@ -143,4 +146,5 @@ const prayers = {
 export const Api = {
   auth,
   columns,
+  prayers,
 };

@@ -10,12 +10,14 @@ interface AuthState {
   token: string | null;
   isLoading: boolean;
   isPreload: boolean;
+  name: string | null;
 }
 
 const initialState: AuthState = {
   token: null,
   isLoading: false,
   isPreload: false,
+  name: null,
 };
 
 export const signIn = createAsyncThunk(
@@ -25,6 +27,7 @@ export const signIn = createAsyncThunk(
       .signIn(data.email, data.password)
       .then(response => {
         thunkAPI.dispatch(setToken(response.token));
+        thunkAPI.dispatch(setName(response.name));
         return response;
       })
       .catch(error => {
@@ -40,6 +43,7 @@ export const signUp = createAsyncThunk(
       .signUp(data.name, data.email, data.password)
       .then(response => {
         thunkAPI.dispatch(setToken(response.token));
+        thunkAPI.dispatch(setName(response.name));
         thunkAPI.dispatch(
           setColumns(
             response.columns.map((c: IColumn) => new Column(c.id, c.title)),
@@ -57,12 +61,25 @@ export const getToken = createAsyncThunk('auth/getTokenFromStorage', () => {
   return storage.getToken();
 });
 
+export const getName = createAsyncThunk('auth/getNameFromStorage', () => {
+  return storage.getName();
+});
+
 export const setToken = createAsyncThunk(
   'auth/setTokenToStorage',
   (token: string) => {
     storage.setToken(token);
 
     return token;
+  },
+);
+
+export const setName = createAsyncThunk(
+  'auth/setNameToStorage',
+  (name: string) => {
+    storage.setName(name);
+
+    return name;
   },
 );
 
@@ -73,6 +90,10 @@ export const removeToken = createAsyncThunk(
   },
 );
 
+export const removeName = createAsyncThunk('auth/removeNameFromStorage', () => {
+  storage.removeName();
+});
+
 export const authSlice = createSlice({
   name: 'auth',
   initialState,
@@ -81,10 +102,19 @@ export const authSlice = createSlice({
     builder.addCase(setToken.fulfilled, (state, action) => {
       state.token = action.payload;
     });
+    builder.addCase(setName.fulfilled, (state, action) => {
+      state.token = action.payload;
+    });
     builder.addCase(getToken.pending, state => {
       state.isPreload = true;
     });
     builder.addCase(getToken.rejected, state => {
+      state.isPreload = true;
+    });
+    builder.addCase(getName.pending, state => {
+      state.isPreload = true;
+    });
+    builder.addCase(getName.rejected, state => {
       state.isPreload = true;
     });
     builder.addCase(getToken.fulfilled, (state, action) => {
@@ -93,6 +123,13 @@ export const authSlice = createSlice({
     });
     builder.addCase(removeToken.fulfilled, state => {
       state.token = null;
+    });
+    builder.addCase(getName.fulfilled, (state, action) => {
+      state.token = action.payload;
+      state.isPreload = false;
+    });
+    builder.addCase(removeName.fulfilled, state => {
+      state.name = null;
     });
     builder.addCase(signIn.pending, state => {
       state.isLoading = true;
@@ -118,6 +155,7 @@ export const authSlice = createSlice({
 });
 
 export const selectToken = (state: RootState) => state.auth.token;
+export const selectName = (state: RootState) => state.auth.name;
 export const selectAuthIsLoading = (state: RootState) => state.auth.isLoading;
 export const selectAuthIsPreload = (state: RootState) => state.auth.isPreload;
 

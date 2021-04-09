@@ -1,5 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {BUTTON_TEXT_COLOR, SECONDARY_TEXT_COLOR} from './colors';
+import {
+  BUTTON_TEXT_COLOR,
+  DANGER_COLOR,
+  PRIMARY_COLOR,
+  PRIMARY_TEXT_COLOR,
+  SECONDARY_COLOR,
+  SECONDARY_TEXT_COLOR,
+} from './colors';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   DEFAULT_SPACE,
@@ -42,6 +49,19 @@ export const styles = StyleSheet.create({
   },
   inputIcon: {
     marginRight: CONTAINER_HORIZONTAL_PADDING,
+  },
+  prayerItemContainer: {
+    flexDirection: 'row',
+    paddingVertical: DEFAULT_SPACE,
+    alignItems: 'center',
+  },
+  cardText: {
+    fontSize: PRIMARY_TEXT_SIZE,
+    color: PRIMARY_TEXT_COLOR,
+  },
+  cardSmallText: {
+    fontSize: SECONDARY_TEXT_SIZE,
+    color: PRIMARY_TEXT_COLOR,
   },
 });
 

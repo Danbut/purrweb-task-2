@@ -1,6 +1,7 @@
 import {configureStore, getDefaultMiddleware} from '@reduxjs/toolkit';
 import authReducer from './auth/authSlice';
 import columnsReducer from './columns/columnsSlice';
+import prayersReducer from './prayers/prayersSlice';
 import createSagaMiddleware from 'redux-saga';
 import {watcherSaga} from './sagas/watcherSaga';
 
@@ -10,6 +11,7 @@ export const store = configureStore({
   reducer: {
     auth: authReducer,
     columns: columnsReducer,
+    prayers: prayersReducer,
   },
   middleware: [...getDefaultMiddleware({thunk: true}), sagaMiddleware],
 });

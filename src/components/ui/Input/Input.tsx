@@ -21,6 +21,7 @@ interface InputProps extends TextInputProps {
   icon?: boolean;
   label?: string;
   errors?: {message: string};
+  iconOnPress?: () => void;
 }
 
 const InputBox = styled.View<InputProps>`
@@ -45,13 +46,21 @@ export const Input: React.FC<InputProps> = React.forwardRef((props, ref) => {
     icon,
     selectionColor,
     placeholderTextColor,
+    iconOnPress,
   } = props;
 
   return (
     <>
       {label && <Label>{label}</Label>}
       <InputBox borderRadius={borderRadius}>
-        {icon && <PlusIcon width={24} height={24} style={styles.inputIcon} />}
+        {icon && (
+          <PlusIcon
+            width={24}
+            height={24}
+            style={styles.inputIcon}
+            onPress={iconOnPress}
+          />
+        )}
         <StyledTextInput
           {...props}
           ref={ref}

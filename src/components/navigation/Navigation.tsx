@@ -1,7 +1,7 @@
-import {NavigationContainer} from '@react-navigation/native';
+import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Text} from 'react-native';
 import {
   getToken,
   selectAuthIsPreload,
@@ -10,7 +10,13 @@ import {
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {MyDesk} from '../screens/app/MyDesk';
 import {SignIn, SignUp} from '../screens/auth';
-import {styles, PRIMARY_COLOR, PRIMARY_TEXT_COLOR} from '../../assets';
+import {
+  styles,
+  PRIMARY_COLOR,
+  PRIMARY_TEXT_COLOR,
+  SECONDARY_TEXT_COLOR,
+  SECONDARY_TEXT_SIZE,
+} from '../../assets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   COLUMN_SCREEN,
@@ -65,10 +71,26 @@ export const Navigation: React.FC = () => {
           <Stack.Screen
             name={COLUMN_SCREEN}
             component={() => {
+              const route = useRoute();
+              //TODO: add badge
               return (
-                <Tab.Navigator>
-                  <Tab.Screen name={MY_PRAYERS_TAB} component={Cards} />
-                  <Tab.Screen name={SUBSCRIBED_TAB} component={Cards} />
+                <Tab.Navigator
+                  tabBarOptions={{
+                    activeTintColor: PRIMARY_COLOR,
+                    inactiveTintColor: SECONDARY_TEXT_COLOR,
+                    labelStyle: {fontSize: SECONDARY_TEXT_SIZE},
+                    indicatorStyle: {
+                      backgroundColor: PRIMARY_COLOR,
+                    },
+                  }}>
+                  <Tab.Screen
+                    name={MY_PRAYERS_TAB}
+                    component={() => <Cards column={route.params as IColumn} />}
+                  />
+                  <Tab.Screen
+                    name={SUBSCRIBED_TAB}
+                    component={() => <Cards column={route.params as IColumn} />}
+                  />
                 </Tab.Navigator>
               );
             }}
@@ -80,6 +102,8 @@ export const Navigation: React.FC = () => {
                   <SettingsIcon width={24} height={24} />
                 </TouchableOpacity>
               ),
+              //TODO: change backbutton color
+              headerBackTitleVisible: false,
             })}></Stack.Screen>
         </Stack.Navigator>
       ) : (

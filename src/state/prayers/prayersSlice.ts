@@ -1,55 +1,44 @@
-// import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
-// import {IPrayer} from '../../entities/Prayer';
-// import {RootState} from '../store';
+import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
+import {IPrayer} from '../../entities/Prayer';
+import {RootState} from '../store';
 
-// interface prayersState {
-//   prayers: IPrayer[];
-//   isLoading: boolean;
-// }
+interface PrayersState {
+  prayers: IPrayer[];
+  isLoading: boolean;
+}
 
-// const initialState: prayersState = {
-//   prayers: [],
-//   isLoading: false,
-// };
+const initialState: PrayersState = {
+  prayers: [],
+  isLoading: false,
+};
 
-// export const prayersSlice = createSlice({
-//   name: 'prayers',
-//   initialState,
-//   reducers: {
-//     getprayers: state => {
-//       state.isLoading = true;
-//     },
-//     setprayers: (state, action) => {
-//       state.prayers = action.payload.sort((a, b) => {
-//         if (a.id > b.id) {
-//           return -1;
-//         }
-//         if (a.id < b.id) {
-//           return 1;
-//         }
+export const prayersSlice = createSlice({
+  name: 'prayers',
+  initialState,
+  reducers: {
+    getPrayers: state => {
+      state.isLoading = true;
+    },
+    setPrayers: (state, action) => {
+      state.prayers = action.payload;
+      state.isLoading = false;
+    },
+    addPrayer: state => {
+      state.isLoading = true;
+    },
+  },
+});
 
-//         return 0;
-//       });
-//       state.isLoading = false;
-//     },
-//     renameColumn: state => {
-//       state.isLoading = true;
-//     },
-//     addColumn: state => {
-//       state.isLoading = true;
-//     },
-//   },
-// });
+export const addPrayer: ActionCreatorWithPayload<{
+  title: string;
+  column: string;
+}> = prayersSlice.actions.addPrayer;
 
-// export const selectprayers = (state: RootState) => state.prayers.prayers;
-// export const selectprayersIsLoading = (state: RootState) =>
-//   state.prayers.isLoading;
+export const selectPrayers = (state: RootState) => state.prayers.prayers;
+export const selectPrayersIsLoading = (state: RootState) =>
+  state.prayers.isLoading;
+export const selectPrayersByColumnId = (state: RootState, columnId: string) =>
+  state.prayers.prayers.filter(p => columnId == p.columnId);
+export const {setPrayers, getPrayers} = prayersSlice.actions;
 
-// export const renameColumn: ActionCreatorWithPayload<{
-//   columnId: string;
-//   title: string;
-// }> = prayersSlice.actions.renameColumn;
-
-// export const {setprayers, getprayers, addColumn} = prayersSlice.actions;
-
-// export default prayersSlice.reducer;
+export default prayersSlice.reducer;
