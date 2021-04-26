@@ -4,3 +4,4 @@ export const DESK_SCREEN = 'Desk';
 export const COLUMN_SCREEN = 'Column';
 export const MY_PRAYERS_TAB = 'MY PRAYERS';
 export const SUBSCRIBED_TAB = 'SUBSCRIBED';
+export const PRAYER_DETAILS_SCREEN = 'PRAYER_DETAILS';

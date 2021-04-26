@@ -1,6 +1,6 @@
 import {StyleSheet} from 'react-native';
 import {
-  BUTTON_TEXT_COLOR,
+  WHITE_COLOR,
   DANGER_COLOR,
   PRIMARY_COLOR,
   PRIMARY_TEXT_COLOR,
@@ -32,7 +32,7 @@ export const styles = StyleSheet.create({
     alignSelf: 'center',
   },
   button: {
-    color: BUTTON_TEXT_COLOR,
+    color: WHITE_COLOR,
     textAlign: 'center',
   },
   link: {

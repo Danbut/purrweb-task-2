@@ -1,7 +1,7 @@
 import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React, {useEffect} from 'react';
-import {ActivityIndicator, Text} from 'react-native';
+import {ActivityIndicator} from 'react-native';
 import {
   getToken,
   selectAuthIsPreload,
@@ -16,12 +16,15 @@ import {
   PRIMARY_TEXT_COLOR,
   SECONDARY_TEXT_COLOR,
   SECONDARY_TEXT_SIZE,
+  SECONDARY_COLOR,
+  WHITE_COLOR,
 } from '../../assets';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   COLUMN_SCREEN,
   DESK_SCREEN,
   MY_PRAYERS_TAB,
+  PRAYER_DETAILS_SCREEN,
   SIGN_IN_SCREEN,
   SIGN_UP_SCREEN,
   SUBSCRIBED_TAB,
@@ -30,7 +33,10 @@ import {addColumn} from '../../state/columns/columnsSlice';
 import {Cards} from '../screens/app/Cards';
 import {IColumn} from '../../entities/Column';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {PlusIcon, SettingsIcon} from '../ui';
+import {PlusIcon, PrayerIcon, SettingsIcon} from '../ui';
+import {PrayerDetails} from '../screens/app/PrayerDetails/PrayerDetails';
+import {IPrayer} from '../../entities/Prayer';
+import {Appbar} from 'react-native-paper';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -105,6 +111,22 @@ export const Navigation: React.FC = () => {
               //TODO: change backbutton color
               headerBackTitleVisible: false,
             })}></Stack.Screen>
+          <Stack.Screen
+            name={PRAYER_DETAILS_SCREEN}
+            component={PrayerDetails}
+            //TODO: make prominent appbar
+            options={({route}) => ({
+              headerTitle: (route.params as IPrayer).title,
+              headerStyle: {backgroundColor: SECONDARY_COLOR},
+              headerRight: () => (
+                <TouchableOpacity style={styles.icon} onPress={() => {}}>
+                  <PrayerIcon width={24} height={24} color={WHITE_COLOR} />
+                </TouchableOpacity>
+              ),
+              headerBackTitleVisible: false,
+              headerTintColor: WHITE_COLOR,
+            })}
+          />
         </Stack.Navigator>
       ) : (
         <Stack.Navigator>

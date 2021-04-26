@@ -5,7 +5,6 @@ import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   DANGER_COLOR,
-  LINE_COLOR,
   PRIMARY_COLOR,
   SECONDARY_TEXT_SIZE,
 } from '../../../assets';
@@ -20,6 +19,7 @@ import {
 import {RootState} from '../../../state/store';
 import {Input} from '../../ui';
 import {Prayer} from './Prayer/Prayer';
+import {ListDivider} from '../../ui';
 
 interface CardsProps {
   column: IColumn;
@@ -63,13 +63,9 @@ const renderItem = ({item}) => {
         style={{
           paddingHorizontal: CONTAINER_HORIZONTAL_PADDING,
         }}>
-        <View
-          style={{
-            borderBottomWidth: 1,
-            borderColor: LINE_COLOR,
-          }}>
+        <ListDivider>
           <Prayer prayer={item} />
-        </View>
+        </ListDivider>
       </View>
     </Swipeable>
   );
@@ -107,8 +103,8 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
               ref={ref}
               value={value}
               onChangeText={onChange}
-              icon
-              iconOnPress={handleSubmit(onSubmit)}
+              icon={'plus'}
+              onPressIcon={handleSubmit(onSubmit)}
               placeholder="Add a prayer..."
             />
           )}

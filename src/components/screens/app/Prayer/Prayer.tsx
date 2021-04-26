@@ -1,36 +1,26 @@
+import {useNavigation} from '@react-navigation/core';
 import React from 'react';
-import {Text, View} from 'react-native';
-import styled from 'styled-components/native';
-import {
-  DANGER_COLOR,
-  PRIMARY_COLOR,
-  SECONDARY_COLOR,
-  SMALL_SPACE,
-  styles,
-} from '../../../../assets';
+import {Text} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {SMALL_SPACE, styles} from '../../../../assets';
 import {IPrayer} from '../../../../entities/Prayer';
-import {Checkbox, PrayerIcon} from '../../../ui';
+import {PRAYER_DETAILS_SCREEN} from '../../../navigation/constants';
+import {Checkbox, Mark, PrayerIcon} from '../../../ui';
 import {UserIcon} from '../../../ui';
 
 interface PrayerProps {
   prayer: IPrayer;
 }
 
-const cardColors = [DANGER_COLOR, PRIMARY_COLOR, SECONDARY_COLOR];
-
 export const Prayer: React.FC<PrayerProps> = ({prayer}) => {
-  const Mark = styled.View`
-    width: 3px;
-    height: 24px;
-    border-radius: 10px;
-    background-color: ${cardColors[
-      Math.floor(Math.random() * cardColors.length)
-    ]};
-    margin-right: ${SMALL_SPACE};
-  `;
+  const navigation = useNavigation();
+
+  const openDetails = () => {
+    navigation.navigate(PRAYER_DETAILS_SCREEN, prayer);
+  };
 
   return (
-    <View style={styles.prayerItemContainer}>
+    <TouchableOpacity style={styles.prayerItemContainer} onPress={openDetails}>
       <Mark />
       <Checkbox></Checkbox>
       <Text style={[styles.cardText, {marginRight: SMALL_SPACE, flex: 1}]}>
@@ -40,6 +30,6 @@ export const Prayer: React.FC<PrayerProps> = ({prayer}) => {
       <Text style={[styles.cardSmallText, {marginRight: SMALL_SPACE}]}>3</Text>
       <PrayerIcon width={21} height={18} />
       <Text style={styles.cardSmallText}>127</Text>
-    </View>
+    </TouchableOpacity>
   );
 };

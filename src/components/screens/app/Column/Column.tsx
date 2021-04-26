@@ -25,7 +25,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
       style={styles.column}
       onLongPress={() => {
         setIsRenaming(true);
-        inputRef.current.focus();
+        inputRef.current?.focus();
       }}
       onPress={() => navigation.navigate(COLUMN_SCREEN, column)}>
       <Input
@@ -34,7 +34,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
         onChangeText={text => setColumnName(text)}
         editable={isRenaming}
         borderRadius={4}
-        bold
+        isBold
         autoFocus={isRenaming}
         onEndEditing={() => {
           dispatch(
