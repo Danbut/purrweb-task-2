@@ -7,7 +7,6 @@ import authReducer from './ducks/auth/authSlice';
 import columnsReducer from './ducks/columns/columnsSlice';
 import prayersReducer from './ducks/prayers/prayersSlice';
 import commentsReducer from './ducks/comments/commentsSlice';
-import usersReducer from './users';
 import createSagaMiddleware from 'redux-saga';
 import {watcherSaga} from './sagas/watcherSaga';
 import AsyncStorage from '@react-native-async-storage/async-storage';
@@ -33,7 +32,6 @@ const reducer = combineReducers({
   columns: columnsReducer,
   prayers: prayersReducer,
   comments: commentsReducer,
-  users: usersReducer,
 });
 
 const persistedReducer = persistReducer(persistConfig, reducer);

@@ -8,16 +8,19 @@ import {
   SECONDARY_TEXT_SIZE,
   SMALL_SPACE,
 } from '../../../../../assets';
+import {selectName} from '../../../../../state/ducks/auth';
+import {useAppSelector} from '../../../../../state/hooks';
 import {getDisplayCommentDate} from '../../../../../utils/getDisplayCommentDate';
 import {Avatar} from '../../../../ui/Avatar';
 
 interface CommentProps {
-  name: string;
   createdAt: string;
   text: string;
 }
 
-export const Comment: React.FC<CommentProps> = ({name, createdAt, text}) => {
+export const Comment: React.FC<CommentProps> = ({createdAt, text}) => {
+  const name = useAppSelector(selectName);
+
   return (
     <View style={{padding: CONTAINER_HORIZONTAL_PADDING, flexDirection: 'row'}}>
       <Avatar></Avatar>
