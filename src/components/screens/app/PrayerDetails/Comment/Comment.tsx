@@ -8,6 +8,7 @@ import {
   SECONDARY_TEXT_SIZE,
   SMALL_SPACE,
 } from '../../../../../assets';
+import {getDisplayCommentDate} from '../../../../../utils/getDisplayCommentDate';
 import {Avatar} from '../../../../ui/Avatar';
 
 interface CommentProps {
@@ -36,7 +37,7 @@ export const Comment: React.FC<CommentProps> = ({name, createdAt, text}) => {
               color: SECONDARY_TEXT_COLOR,
               paddingLeft: SMALL_SPACE,
             }}>
-            {createdAt}
+            {getDisplayCommentDate(createdAt)}
           </Text>
         </View>
         <Text

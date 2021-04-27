@@ -1,6 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
 import {Config} from '../config';
-import {IColumn} from '../entities/Column';
 import {storage} from './storage';
 
 const httpClient = axios.create({
@@ -143,8 +142,44 @@ const prayers = {
   },
 };
 
+const comments = {
+  getComments: async () => {
+    const response: AxiosResponse = await httpClient.get('/comments');
+
+    return response.data;
+  },
+  addComment: async (text: string, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.post(
+      `​/prayers​/${prayerId}​/comments`,
+      {
+        body: text,
+      },
+    );
+
+    return response.data;
+  },
+  editComment: async (text: string, commentId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/comments/${commentId}`,
+      {
+        body: text,
+      },
+    );
+
+    return response.data;
+  },
+  deleteComment: async (commentId: string) => {
+    const response: AxiosResponse = await httpClient.delete(
+      `/comments/${commentId}`,
+    );
+
+    return response.data;
+  },
+};
+
 export const Api = {
   auth,
   columns,
   prayers,
+  comments,
 };

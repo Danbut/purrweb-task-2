@@ -8,7 +8,7 @@ import {
   CONTAINER_HORIZONTAL_PADDING,
   WELCOME_TEXT,
 } from '../../../assets';
-import {selectAuthIsLoading, signUp} from '../../../state/auth/authSlice';
+import {selectAuthIsLoading, signUp} from '../../../state/ducks/auth/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {signUpSchema} from './validationSchemas';
 import {SIGN_IN_SCREEN} from '../../navigation/constants';

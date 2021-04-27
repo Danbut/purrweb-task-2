@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {TouchableOpacity, View} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import {
   DEFAULT_SPACE,

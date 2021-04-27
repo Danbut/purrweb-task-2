@@ -1,6 +1,6 @@
 import {call, put} from 'redux-saga/effects';
 import {Api} from '../../../services/api';
-import {setColumns} from '../../columns/columnsSlice';
+import {setColumns} from '../../ducks/columns/columnsSlice';
 
 export function* handleAddColumn(action) {
   try {

@@ -1,6 +1,6 @@
 import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
-import {IPrayer} from '../../entities/Prayer';
-import {RootState} from '../store';
+import {IPrayer} from '../../../interfaces/IPrayer';
+import {RootState} from '../../store';
 
 interface PrayersState {
   prayers: IPrayer[];

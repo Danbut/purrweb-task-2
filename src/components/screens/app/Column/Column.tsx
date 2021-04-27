@@ -3,11 +3,11 @@ import React, {useRef, useState} from 'react';
 import {TextInput} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
-import {IColumn} from '../../../../entities/Column';
-import {renameColumn} from '../../../../state/columns/columnsSlice';
+import {renameColumn} from '../../../../state/ducks/columns/columnsSlice';
 import {styles} from '../../../../assets';
 import {COLUMN_SCREEN} from '../../../navigation/constants';
 import {Input} from '../../../ui';
+import {IColumn} from '../../../../interfaces/IColumn';
 
 interface ColumnProps {
   column: IColumn;

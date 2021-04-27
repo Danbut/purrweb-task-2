@@ -3,7 +3,7 @@ import React from 'react';
 import {Text} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {SMALL_SPACE, styles} from '../../../../assets';
-import {IPrayer} from '../../../../entities/Prayer';
+import {IPrayer} from '../../../../interfaces/IPrayer';
 import {PRAYER_DETAILS_SCREEN} from '../../../navigation/constants';
 import {Checkbox, Mark, PrayerIcon} from '../../../ui';
 import {UserIcon} from '../../../ui';

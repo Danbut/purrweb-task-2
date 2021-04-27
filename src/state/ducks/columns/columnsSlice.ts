@@ -1,6 +1,6 @@
 import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
-import {IColumn} from '../../entities/Column';
-import {RootState} from '../store';
+import {IColumn} from '../../../interfaces/IColumn';
+import {RootState} from '../../store';
 
 interface ColumnsState {
   columns: IColumn[];

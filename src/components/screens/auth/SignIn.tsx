@@ -10,7 +10,7 @@ import {
 } from '../../../assets';
 import {useNavigation} from '@react-navigation/native';
 import {signInSchema} from './validationSchemas';
-import {selectAuthIsLoading, signIn} from '../../../state/auth/authSlice';
+import {selectAuthIsLoading, signIn} from '../../../state/ducks/auth/authSlice';
 import {SIGN_UP_SCREEN} from '../../navigation/constants';
 import {useForm, Controller} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';

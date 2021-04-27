@@ -8,18 +8,18 @@ import {
   PRIMARY_COLOR,
   SECONDARY_TEXT_SIZE,
 } from '../../../assets';
-import {IColumn} from '../../../entities/Column';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {
   addPrayer,
   getPrayers,
   selectPrayersByColumnId,
   selectPrayersIsLoading,
-} from '../../../state/prayers/prayersSlice';
+} from '../../../state/ducks/prayers/prayersSlice';
 import {RootState} from '../../../state/store';
 import {Input} from '../../ui';
 import {Prayer} from './Prayer/Prayer';
 import {ListDivider} from '../../ui';
+import {IColumn} from '../../../interfaces/IColumn';
 
 interface CardsProps {
   column: IColumn;

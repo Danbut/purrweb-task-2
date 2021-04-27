@@ -1,12 +1,12 @@
 import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import React, {useEffect} from 'react';
+import React from 'react';
 import {ActivityIndicator} from 'react-native';
 import {
-  getToken,
+  logout,
   selectAuthIsPreload,
   selectToken,
-} from '../../state/auth/authSlice';
+} from '../../state/ducks/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {MyDesk} from '../screens/app/MyDesk';
 import {SignIn, SignUp} from '../screens/auth';
@@ -29,14 +29,13 @@ import {
   SIGN_UP_SCREEN,
   SUBSCRIBED_TAB,
 } from './constants';
-import {addColumn} from '../../state/columns/columnsSlice';
+import {addColumn} from '../../state/ducks/columns/columnsSlice';
 import {Cards} from '../screens/app/Cards';
-import {IColumn} from '../../entities/Column';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
 import {PlusIcon, PrayerIcon, SettingsIcon} from '../ui';
 import {PrayerDetails} from '../screens/app/PrayerDetails/PrayerDetails';
-import {IPrayer} from '../../entities/Prayer';
-import {Appbar} from 'react-native-paper';
+import {IColumn} from '../../interfaces/IColumn';
+import {IPrayer} from '../../interfaces/IPrayer';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -46,10 +45,6 @@ export const Navigation: React.FC = () => {
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
   const isPreload = useAppSelector(selectAuthIsPreload);
-
-  useEffect(() => {
-    dispatch(getToken());
-  }, [dispatch]);
 
   return (
     <NavigationContainer>
@@ -104,7 +99,11 @@ export const Navigation: React.FC = () => {
               headerTitle: (route.params as IColumn).title,
               headerTintColor: PRIMARY_TEXT_COLOR,
               headerRight: () => (
-                <TouchableOpacity style={styles.icon} onPress={() => {}}>
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => {
+                    dispatch(logout());
+                  }}>
                   <SettingsIcon width={24} height={24} />
                 </TouchableOpacity>
               ),

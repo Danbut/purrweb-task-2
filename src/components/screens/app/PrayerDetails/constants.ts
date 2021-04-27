@@ -23,24 +23,3 @@ export const infoItemData = [
     title: 'Times Prayed by Others',
   },
 ];
-
-export const comments = [
-  {
-    id: uuid.v4(),
-    name: 'Anna Barber',
-    text: 'Hey, Hey!',
-    createdAt: '2 days ago',
-  },
-  {
-    id: uuid.v4(),
-    name: 'Hanna Barber',
-    text: 'Hi!',
-    createdAt: '2 days ago',
-  },
-  {
-    id: uuid.v4(),
-    name: 'Gloria Barber',
-    text: 'How you doing?',
-    createdAt: '2 days ago',
-  },
-];

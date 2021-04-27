@@ -4,12 +4,12 @@ import {
   getColumns,
   selectColumns,
   selectColumnsIsLoading,
-} from '../../../state/columns/columnsSlice';
+} from '../../../state/ducks/columns/columnsSlice';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {PRIMARY_COLOR, CONTAINER_HORIZONTAL_PADDING} from '../../../assets';
 import {Container} from '../../ui';
 import {Column} from './Column';
-import {getPrayers} from '../../../state/prayers/prayersSlice';
+import {getPrayers} from '../../../state/ducks/prayers/prayersSlice';
 
 interface MyDeskProps {}
 
