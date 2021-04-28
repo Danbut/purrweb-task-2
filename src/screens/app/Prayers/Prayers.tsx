@@ -1,6 +1,6 @@
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Animated, FlatList, RefreshControl, Text, View} from 'react-native';
+import {Animated, FlatList, RefreshControl, View} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {
   CONTAINER_HORIZONTAL_PADDING,
@@ -11,6 +11,7 @@ import {
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {
   addPrayer,
+  deletePrayer,
   getPrayers,
   selectPrayersByColumnId,
   selectPrayersIsLoading,
@@ -20,45 +21,57 @@ import {Input} from '../../../ui';
 import {PrayerItem} from '../../../components/PrayerItem/PrayerItem';
 import {ListDivider} from '../../../ui';
 import {IColumn} from '../../../interfaces/IColumn';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useDispatch} from 'react-redux';
 
 interface CardsProps {
   column: IColumn;
 }
 
 //TODO: close if another open
-const renderRightActions = (_, dragX) => {
+const renderRightActions = (onPress, dragX) => {
   const trans = dragX.interpolate({
     inputRange: [0, 50],
     outputRange: [100, 150],
   });
   return (
-    <Animated.View
-      style={{
-        backgroundColor: DANGER_COLOR,
-        width: 100,
-        transform: [{translateX: trans}],
-        justifyContent: 'center',
-      }}>
-      <Animated.Text
-        style={[
-          {
-            color: '#ffffff',
-            fontSize: SECONDARY_TEXT_SIZE,
-            textAlign: 'center',
-          },
-          {
-            transform: [{translateX: trans}],
-          },
-        ]}>
-        Delete
-      </Animated.Text>
-    </Animated.View>
+    <TouchableOpacity onPress={onPress}>
+      <Animated.View
+        style={{
+          backgroundColor: DANGER_COLOR,
+          width: 100,
+          height: '100%',
+          transform: [{translateX: trans}],
+          justifyContent: 'center',
+        }}>
+        <Animated.Text
+          style={[
+            {
+              color: '#ffffff',
+              fontSize: SECONDARY_TEXT_SIZE,
+              textAlign: 'center',
+            },
+            {
+              transform: [{translateX: trans}],
+            },
+          ]}>
+          Delete
+        </Animated.Text>
+      </Animated.View>
+    </TouchableOpacity>
   );
 };
 
-const renderItem = ({item}) => {
+const PrayerSwipableItem: React.FC<any> = ({item}) => {
+  const dispatch = useDispatch();
+
   return (
-    <Swipeable renderRightActions={renderRightActions}>
+    <Swipeable
+      renderRightActions={(_, dragX) =>
+        renderRightActions(() => {
+          dispatch(deletePrayer({id: item.id}));
+        }, dragX)
+      }>
       <View
         style={{
           paddingHorizontal: CONTAINER_HORIZONTAL_PADDING,
@@ -113,7 +126,7 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
       </View>
       <FlatList
         data={prayers}
-        renderItem={renderItem}
+        renderItem={({item}) => <PrayerSwipableItem item={item} />}
         keyExtractor={item => `id:${item.id}`}
         refreshControl={
           <RefreshControl

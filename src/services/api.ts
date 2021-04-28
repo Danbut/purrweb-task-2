@@ -140,6 +140,16 @@ const prayers = {
 
     return response.data;
   },
+  updatePrayerDescription: async (description: string, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/prayers/${prayerId}`,
+      {
+        description,
+      },
+    );
+
+    return response.data;
+  },
 };
 
 const comments = {
@@ -150,7 +160,7 @@ const comments = {
   },
   addComment: async (text: string, prayerId: string) => {
     const response: AxiosResponse = await httpClient.post(
-      `​/prayers​/${prayerId}​/comments`,
+      `/prayers/${prayerId}/comments`,
       {
         body: text,
       },

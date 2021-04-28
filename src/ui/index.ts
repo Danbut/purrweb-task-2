@@ -6,3 +6,4 @@ export * from './Checkbox';
 export * from './Mark';
 export * from './Avatar';
 export * from './ListDivider';
+export * from './Subtitle';

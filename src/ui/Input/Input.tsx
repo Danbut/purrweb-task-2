@@ -1,13 +1,13 @@
 import React from 'react';
-import {TextInputProps} from 'react-native';
-import {Label} from './Label';
 import {ErrorMessage} from './ErrorMessage';
 import {InputWithIcon} from './InputWithIcon';
 import {InputBox} from './InputBox';
 import {InputWithIconProps} from './InputWithIcon';
 import {StyledTextInputProps} from './StyledTextInput';
 import {InputBoxProps} from './InputBox';
-interface InputProps extends TextInputProps {
+import styled from 'styled-components/native';
+import {PRIMARY_TEXT_SIZE, SMALL_SPACE} from '../../assets';
+interface InputProps {
   label?: string;
   errors?: {message?: string};
 }
@@ -27,3 +27,8 @@ export const Input: React.FC<
     </>
   );
 });
+
+export const Label = styled.Text`
+  margin-bottom: ${SMALL_SPACE};
+  font-size: ${PRIMARY_TEXT_SIZE};
+`;

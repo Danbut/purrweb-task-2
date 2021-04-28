@@ -4,10 +4,10 @@ import {FlatList} from 'react-native-gesture-handler';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   PRIMARY_COLOR,
-  SECONDARY_TEXT_SIZE,
+  styles,
 } from '../../assets';
 import {Comment} from '../Comment';
-import {ListDivider} from '../../ui';
+import {ListDivider, Subtitle} from '../../ui';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {
   getComments,
@@ -15,7 +15,9 @@ import {
 } from '../../state/ducks/comments/commentsSlice';
 import {selectColumnsIsLoading} from '../../state/ducks/columns/columnsSlice';
 
-interface CommentsListProps {}
+interface CommentsListProps {
+  prayerId: string;
+}
 
 export const CommentsList: React.FC<CommentsListProps> = () => {
   const comments = useAppSelector(selectComments);
@@ -29,19 +31,11 @@ export const CommentsList: React.FC<CommentsListProps> = () => {
 
   return (
     <View>
-      <Text
-        style={{
-          fontSize: SECONDARY_TEXT_SIZE,
-          color: PRIMARY_COLOR,
-          textTransform: 'uppercase',
-          fontWeight: '600',
-          padding: CONTAINER_HORIZONTAL_PADDING,
-        }}>
-        Comments
-      </Text>
+      <Subtitle>Comments</Subtitle>
       <FlatList
         data={comments}
         renderItem={({item}) => <Comment {...item} />}
+        scrollEnabled={false}
         ItemSeparatorComponent={ListDivider}
         ListFooterComponent={ListDivider}
         ListHeaderComponent={ListDivider}
@@ -52,6 +46,15 @@ export const CommentsList: React.FC<CommentsListProps> = () => {
             refreshing={isLoading}
             onRefresh={() => dispatch(getComments())}
           />
+        }
+        ListEmptyComponent={
+          <Text
+            style={[
+              styles.cardSmallText,
+              {alignSelf: 'center', padding: CONTAINER_HORIZONTAL_PADDING},
+            ]}>
+            No comments
+          </Text>
         }
       />
     </View>

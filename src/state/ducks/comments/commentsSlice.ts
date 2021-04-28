@@ -1,4 +1,4 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
 import {IComment} from '../../../interfaces/IComment';
 
 import {RootState} from '../../store';
@@ -33,17 +33,25 @@ export const commentsSlice = createSlice({
       );
       state.isLoading = false;
     },
-    addComment: state => {
-      state.isLoading = true;
+    addComment: (state, action) => {
+      state.comments = [...state.comments, action.payload];
     },
     deleteComment: (state, action) => {},
     editComment: (state, action) => {},
+    sendComment: (state, action) => {},
   },
 });
+
+export const sendComment: ActionCreatorWithPayload<{
+  text: string;
+  prayerId: string;
+}> = commentsSlice.actions.sendComment;
 
 export const selectComments = (state: RootState) => state.comments.comments;
 export const selectCommentsIsLoading = (state: RootState) =>
   state.comments.isLoading;
+export const selectCommentsByPrayerId = (state: RootState, prayerId: string) =>
+  state.comments.comments.filter(c => prayerId === c.prayerId);
 
 export const {
   setComments,

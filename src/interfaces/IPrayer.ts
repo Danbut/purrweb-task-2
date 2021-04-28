@@ -3,4 +3,5 @@ export interface IPrayer {
   readonly title: string;
   readonly checked: boolean;
   readonly columnId: string;
+  readonly description: string;
 }

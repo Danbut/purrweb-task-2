@@ -3,4 +3,5 @@ export interface IComment {
   readonly text: string;
   readonly userId: string;
   readonly createdAt: string;
+  readonly prayerId: string;
 }
