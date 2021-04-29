@@ -6,3 +6,4 @@ export {UserIcon} from './UserIcon';
 export {EditIcon} from './EditIcon';
 export {SubmitIcon} from './SubmitIcon';
 export {CancelIcon} from './CancelIcon';
+export {DeleteIcon} from './DeleteIcon';

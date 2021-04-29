@@ -1,4 +1,5 @@
 import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
+
 import {IComment} from '../../../interfaces/IComment';
 
 import {RootState} from '../../store';
@@ -22,21 +23,23 @@ export const commentsSlice = createSlice({
     },
     setComments: (state, action) => {
       //TODO: sort by date
-      state.comments = action.payload.map(
-        c =>
-          ({
-            id: c.id.toString(),
-            text: c.body,
-            userId: c.userId.toString(),
-            createdAt: c.created,
-          } as IComment),
-      );
+      state.comments = action.payload;
       state.isLoading = false;
     },
     addComment: (state, action) => {
       state.comments = [...state.comments, action.payload];
     },
-    deleteComment: (state, action) => {},
+    deleteComment: (state, action) => {
+      state.comments = state.comments.filter(c => action.payload.id !== c.id);
+    },
+    updateComment: (state, action) => {
+      state.comments = state.comments.map(c => {
+        if (action.payload.id === c.id) {
+          return action.payload;
+        }
+        return c;
+      });
+    },
     editComment: (state, action) => {},
     sendComment: (state, action) => {},
   },

@@ -26,7 +26,7 @@ export const prayersSlice = createSlice({
             id: p.id.toString(),
             title: p.title,
             description: p.description,
-            checked: p.checked,
+            isChecked: p.checked,
             columnId: p.columnId.toString(),
             commentsIds: p.commentsIds.map(id => id.toString()),
           } as IPrayer),
@@ -39,7 +39,7 @@ export const prayersSlice = createSlice({
     updatePrayer: (state, action) => {
       state.prayers = state.prayers.map(p => {
         if (action.payload.id === p.id) {
-          return action.payload as IPrayer;
+          return action.payload;
         } else {
           return p;
         }
@@ -48,6 +48,7 @@ export const prayersSlice = createSlice({
     deletePrayer: (state, action) => {
       state.prayers = state.prayers.filter(p => action.payload.id !== p.id);
     },
+    editPrayerTitle: () => {},
   },
 });
 
@@ -63,6 +64,10 @@ export const updatePrayerDescription: ActionCreatorWithPayload<{
 export const deletePrayer: ActionCreatorWithPayload<{
   id: string;
 }> = prayersSlice.actions.deletePrayer;
+export const editPrayerTitle: ActionCreatorWithPayload<{
+  id: string;
+  title: string;
+}> = prayersSlice.actions.editPrayerTitle;
 
 export const selectPrayers = (state: RootState) => state.prayers.prayers;
 export const selectPrayersIsLoading = (state: RootState) =>

@@ -4,6 +4,7 @@ import {LINE_COLOR} from '../../../assets';
 export interface InputBoxProps {
   borderRadius?: number;
   withBorder?: boolean;
+  padding?: number;
 }
 
 export const InputBox = styled.View<InputBoxProps>`
@@ -11,10 +12,11 @@ export const InputBox = styled.View<InputBoxProps>`
   border-radius: ${({borderRadius}) => borderRadius}px;
   display: flex;
   flex-direction: row;
-  padding: 14px;
+  padding: ${({padding}) => padding}px;
 `;
 
 InputBox.defaultProps = {
   borderRadius: 10,
   withBorder: true,
+  padding: 14,
 };

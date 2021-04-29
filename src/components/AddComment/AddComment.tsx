@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets';
 import {sendComment} from '../../state/ducks/comments/commentsSlice';
 import {Input} from '../../ui';
-import {SendMessage} from '../../ui/Icons/Delete';
+import {SendMessageIcon} from '../../ui/Icons/SendMessage';
 
 interface AddCommentProps {
   prayerId: string;
@@ -17,11 +17,12 @@ type AddCommentForm = {
 };
 
 export const AddComment: React.FC<AddCommentProps> = ({prayerId}) => {
-  const {control, handleSubmit} = useForm<AddCommentForm>();
+  const {control, handleSubmit, setValue} = useForm<AddCommentForm>();
   const dispatch = useDispatch();
 
   const onSubmit = (data: AddCommentForm) => {
     dispatch(dispatch(sendComment({text: data.text, prayerId})));
+    setValue('text', '');
   };
 
   return (
@@ -44,7 +45,7 @@ export const AddComment: React.FC<AddCommentProps> = ({prayerId}) => {
       <View
         style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING, flex: 0.2}}>
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
-          <SendMessage width={28} height={28} />
+          <SendMessageIcon width={28} height={28} />
         </TouchableOpacity>
       </View>
     </View>

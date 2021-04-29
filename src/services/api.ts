@@ -132,6 +132,16 @@ const prayers = {
 
     return response.data;
   },
+  editPrayerTitle: async (title: string, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/prayers/${prayerId}`,
+      {
+        title,
+      },
+    );
+
+    return response.data;
+  },
 
   deletePrayerById: async (prayerId: number) => {
     const response: AxiosResponse = await httpClient.delete(

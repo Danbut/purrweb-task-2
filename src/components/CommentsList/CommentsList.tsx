@@ -13,6 +13,7 @@ import {
   getComments,
   selectComments,
   selectCommentsByCommentsIds,
+  selectCommentsByPrayerId,
 } from '../../state/ducks/comments/commentsSlice';
 import {selectColumnsIsLoading} from '../../state/ducks/columns/columnsSlice';
 import {RootState} from '../../state/store';
@@ -24,10 +25,7 @@ interface CommentsListProps {
 
 export const CommentsList: React.FC<CommentsListProps> = ({prayerId}) => {
   const comments = useAppSelector((state: RootState) =>
-    selectCommentsByCommentsIds(
-      state,
-      selectCommentsIdsByPrayerId(state, prayerId),
-    ),
+    selectCommentsByPrayerId(state, prayerId),
   );
 
   const isLoading = useAppSelector(selectColumnsIsLoading);

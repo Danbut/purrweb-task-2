@@ -15,12 +15,15 @@ interface InputProps {
 export const Input: React.FC<
   InputProps & InputWithIconProps & StyledTextInputProps & InputBoxProps
 > = React.forwardRef((props, ref) => {
-  const {label, errors, borderRadius, withBorder} = props;
+  const {label, errors, borderRadius, withBorder, padding} = props;
 
   return (
     <>
       {label && <Label>{label}</Label>}
-      <InputBox borderRadius={borderRadius} withBorder={withBorder}>
+      <InputBox
+        borderRadius={borderRadius}
+        withBorder={withBorder}
+        padding={padding}>
         <InputWithIcon {...props} ref={ref} />
       </InputBox>
       {errors && <ErrorMessage>{errors.message}</ErrorMessage>}
