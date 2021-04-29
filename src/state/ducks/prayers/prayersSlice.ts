@@ -20,7 +20,17 @@ export const prayersSlice = createSlice({
       state.isLoading = true;
     },
     setPrayers: (state, action) => {
-      state.prayers = action.payload;
+      state.prayers = action.payload.map(
+        p =>
+          ({
+            id: p.id.toString(),
+            title: p.title,
+            description: p.description,
+            checked: p.checked,
+            columnId: p.columnId.toString(),
+            commentsIds: p.commentsIds.map(id => id.toString()),
+          } as IPrayer),
+      );
       state.isLoading = false;
     },
     addPrayer: state => {
@@ -62,5 +72,10 @@ export const selectPrayersByColumnId = (state: RootState, columnId: string) =>
 export const selectPrayerById = (state: RootState, prayerId: string) =>
   state.prayers.prayers.find(p => prayerId == p.id);
 export const {setPrayers, getPrayers, updatePrayer} = prayersSlice.actions;
+
+export const selectCommentsIdsByPrayerId = (
+  state: RootState,
+  prayerId: string,
+) => state.prayers.prayers.find(p => prayerId == p.id)?.commentsIds ?? [];
 
 export default prayersSlice.reducer;

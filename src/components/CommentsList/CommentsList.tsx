@@ -12,15 +12,24 @@ import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {
   getComments,
   selectComments,
+  selectCommentsByCommentsIds,
 } from '../../state/ducks/comments/commentsSlice';
 import {selectColumnsIsLoading} from '../../state/ducks/columns/columnsSlice';
+import {RootState} from '../../state/store';
+import {selectCommentsIdsByPrayerId} from '../../state/ducks/prayers/prayersSlice';
 
 interface CommentsListProps {
   prayerId: string;
 }
 
-export const CommentsList: React.FC<CommentsListProps> = () => {
-  const comments = useAppSelector(selectComments);
+export const CommentsList: React.FC<CommentsListProps> = ({prayerId}) => {
+  const comments = useAppSelector((state: RootState) =>
+    selectCommentsByCommentsIds(
+      state,
+      selectCommentsIdsByPrayerId(state, prayerId),
+    ),
+  );
+
   const isLoading = useAppSelector(selectColumnsIsLoading);
 
   const dispatch = useAppDispatch();

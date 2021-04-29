@@ -54,6 +54,15 @@ export const selectCommentsByPrayerId = (state: RootState, prayerId: string) =>
   state.comments.comments.filter(c => prayerId === c.prayerId);
 export const selectCommentsCount = (state: RootState) =>
   state.comments.comments.length;
+export const selectCommentsByCommentsIds = (
+  state: RootState,
+  commentsIds: string[],
+) =>
+  state.comments.comments.filter(c => {
+    if (commentsIds.includes(c.id.toString())) {
+      return c;
+    }
+  });
 
 export const {
   setComments,
