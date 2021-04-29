@@ -36,6 +36,7 @@ import {PlusIcon, PrayerIcon, SettingsIcon} from '../ui';
 import {PrayerDetails} from '../screens/app/PrayerDetails/PrayerDetails';
 import {IColumn} from '../interfaces/IColumn';
 import {IPrayer} from '../interfaces/IPrayer';
+import HeaderSpan from './HeaderSpan';
 
 const Tab = createMaterialTopTabNavigator();
 
