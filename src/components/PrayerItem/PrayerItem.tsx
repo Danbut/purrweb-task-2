@@ -6,9 +6,10 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {PRIMARY_COLOR, SMALL_SPACE, styles} from '../../assets';
 import {IPrayer} from '../../interfaces/IPrayer';
 import {PRAYER_DETAILS_SCREEN} from '../../navigation/constants';
-import {selectCommentsCount} from '../../state/ducks/comments/commentsSlice';
+import {selectCommentsCountByPrayerId} from '../../state/ducks/comments/commentsSlice';
 import {editPrayerTitle} from '../../state/ducks/prayers/prayersSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
+import {RootState} from '../../state/store';
 import {Checkbox, Input, Mark, MessageIcon, PrayerIcon} from '../../ui';
 import {UserIcon} from '../../ui';
 
@@ -20,7 +21,9 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
   const [isRenaming, setIsRenaming] = useState<boolean>(false);
   const navigation = useNavigation();
   const dispatch = useAppDispatch();
-  const commentsCount = useAppSelector(selectCommentsCount);
+  const commentsCount = useAppSelector((state: RootState) =>
+    selectCommentsCountByPrayerId(state, prayer.id),
+  );
   const [title, setTitle] = useState(prayer?.title);
   const inputRef = useRef<TextInput>();
 

@@ -55,8 +55,10 @@ export const selectCommentsIsLoading = (state: RootState) =>
   state.comments.isLoading;
 export const selectCommentsByPrayerId = (state: RootState, prayerId: string) =>
   state.comments.comments.filter(c => prayerId === c.prayerId);
-export const selectCommentsCount = (state: RootState) =>
-  state.comments.comments.length;
+export const selectCommentsCountByPrayerId = (
+  state: RootState,
+  prayerId: string,
+) => state.comments.comments.filter(c => prayerId === c.prayerId).length;
 export const selectCommentsByCommentsIds = (
   state: RootState,
   commentsIds: string[],
