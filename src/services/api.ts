@@ -116,17 +116,11 @@ const prayers = {
     return response.data;
   },
 
-  updatePrayerById: async (
-    prayerId: number,
-    title: string,
-    checked: string,
-  ) => {
+  setPrayerIsChecked: async (isChecked: boolean, prayerId: string) => {
     const response: AxiosResponse = await httpClient.put(
       `/prayers/${prayerId}`,
       {
-        title,
-        checked,
-        description: '',
+        checked: isChecked,
       },
     );
 

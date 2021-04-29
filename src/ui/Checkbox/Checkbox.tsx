@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import {TouchableOpacity} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 import {DEFAULT_SPACE, PRIMARY_COLOR, SMALL_SPACE, styles} from '../../assets';
 
 interface CheckboxProps {
-  onPress?: (value: boolean) => void;
+  onPress?: () => void;
   value?: boolean;
 }
 
@@ -18,17 +18,9 @@ export const StyledCheckbox = styled.View<CheckboxProps>`
 `;
 
 export const Checkbox: React.FC<CheckboxProps> = ({onPress, value}) => {
-  const [isChecked, setIsChecked] = useState(value ?? false);
-
   return (
-    <TouchableOpacity
-      onPress={() => {
-        if (onPress) {
-          onPress(!isChecked);
-        }
-        setIsChecked(!isChecked);
-      }}>
-      <StyledCheckbox value={isChecked} />
+    <TouchableOpacity onPress={onPress}>
+      <StyledCheckbox value={value} />
     </TouchableOpacity>
   );
 };

@@ -2,12 +2,12 @@ import React from 'react';
 import Svg, {Path} from 'react-native-svg';
 import {SECONDARY_COLOR} from '../../assets';
 
-interface DeleteIconProps {
+interface SendMessageIcon {
   width?: number;
   height?: number;
 }
 
-export const SendMessageIcon: React.FC<DeleteIconProps> = ({width, height}) => (
+export const SendMessageIcon: React.FC<SendMessageIcon> = ({width, height}) => (
   <Svg
     width={width}
     height={height}

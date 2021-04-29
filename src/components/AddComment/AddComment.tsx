@@ -6,7 +6,7 @@ import {useDispatch} from 'react-redux';
 import {CONTAINER_HORIZONTAL_PADDING} from '../../assets';
 import {sendComment} from '../../state/ducks/comments/commentsSlice';
 import {Input} from '../../ui';
-import {SendMessageIcon} from '../../ui/Icons/SendMessage';
+import {SendMessageIcon} from '../../ui/Icons/SendMessageIcon';
 
 interface AddCommentProps {
   prayerId: string;

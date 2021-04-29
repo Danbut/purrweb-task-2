@@ -44,6 +44,8 @@ export const columnsSlice = createSlice({
 export const selectColumns = (state: RootState) => state.columns.columns;
 export const selectColumnsIsLoading = (state: RootState) =>
   state.columns.isLoading;
+export const selectColumnById = (state: RootState, columnId: string) =>
+  state.columns.columns.find(c => columnId == c.id);
 
 export const renameColumn: ActionCreatorWithPayload<{
   columnId: string;

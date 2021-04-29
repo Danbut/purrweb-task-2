@@ -7,3 +7,4 @@ export {EditIcon} from './EditIcon';
 export {SubmitIcon} from './SubmitIcon';
 export {CancelIcon} from './CancelIcon';
 export {DeleteIcon} from './DeleteIcon';
+export {LogoutIcon} from './LogoutIcon';

@@ -17,6 +17,7 @@ import {
   getPrayers,
   updatePrayerDescription,
   editPrayerTitle,
+  setPrayerIsChecked,
 } from '../ducks/prayers/prayersSlice';
 import {handleLogout, handleSignIn, handleSignUp} from './auth';
 import {handleAddColumn} from './columns/handleAddColumn';
@@ -31,6 +32,7 @@ import {handleCreatePrayer} from './prayers/handleCreatePrayer';
 import {handleDeletePrayer} from './prayers/handleDeletePrayer';
 import {handleGetPrayers} from './prayers/handleGetPrayers';
 import {handleUpdatePrayerDescription} from './prayers/handleUpdatePrayerDescription';
+import {handleSetPrayerIsChecked} from './prayers/handleSetPrayerIsChecked';
 
 export function* watcherSaga() {
   yield takeLatest(getColumns.type, handleGetColumns);
@@ -48,4 +50,5 @@ export function* watcherSaga() {
   yield takeLatest(updatePrayerDescription.type, handleUpdatePrayerDescription);
   yield takeLatest(deletePrayer.type, handleDeletePrayer);
   yield takeLatest(editPrayerTitle.type, handleEditPrayerTitle);
+  yield takeLatest(setPrayerIsChecked.type, handleSetPrayerIsChecked);
 }

@@ -1,10 +1,11 @@
 import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
+import {ActivityIndicator, Text, View} from 'react-native';
 import {
   logout,
   selectAuthIsPreload,
+  selectName,
   selectToken,
 } from '../state/ducks/auth/authSlice';
 import {useAppDispatch, useAppSelector} from '../state/hooks';
@@ -29,14 +30,14 @@ import {
   SIGN_UP_SCREEN,
   SUBSCRIBED_TAB,
 } from './constants';
-import {addColumn} from '../state/ducks/columns/columnsSlice';
+import {addColumn, selectColumnById} from '../state/ducks/columns/columnsSlice';
 import {Cards} from '../screens/app/Prayers/Prayers';
 import {createMaterialTopTabNavigator} from '@react-navigation/material-top-tabs';
-import {PlusIcon, PrayerIcon, SettingsIcon} from '../ui';
+import {LogoutIcon, PlusIcon, PrayerIcon, SettingsIcon} from '../ui';
 import {PrayerDetails} from '../screens/app/PrayerDetails/PrayerDetails';
 import {IColumn} from '../interfaces/IColumn';
 import {IPrayer} from '../interfaces/IPrayer';
-import HeaderSpan from './HeaderSpan';
+import {RootState} from '../state/store';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -66,6 +67,15 @@ export const Navigation: React.FC = () => {
                     dispatch(addColumn());
                   }}>
                   <PlusIcon width={16} height={16} />
+                </TouchableOpacity>
+              ),
+              headerLeft: () => (
+                <TouchableOpacity
+                  style={styles.icon}
+                  onPress={() => {
+                    dispatch(logout());
+                  }}>
+                  <LogoutIcon width={24} height={24} />
                 </TouchableOpacity>
               ),
             }}
@@ -100,11 +110,7 @@ export const Navigation: React.FC = () => {
               headerTitle: (route.params as IColumn).title,
               headerTintColor: PRIMARY_TEXT_COLOR,
               headerRight: () => (
-                <TouchableOpacity
-                  style={styles.icon}
-                  onPress={() => {
-                    dispatch(logout());
-                  }}>
+                <TouchableOpacity style={styles.icon} onPress={() => {}}>
                   <SettingsIcon width={24} height={24} />
                 </TouchableOpacity>
               ),
@@ -116,7 +122,22 @@ export const Navigation: React.FC = () => {
             component={PrayerDetails}
             //TODO: make prominent appbar
             options={({route}) => ({
-              headerTitle: (route.params as IPrayer).title,
+              headerTitle: () => {
+                const column = useAppSelector((state: RootState) =>
+                  selectColumnById(state, (route.params as IPrayer).columnId),
+                );
+                const user = useAppSelector(selectName);
+                return (
+                  <>
+                    <Text style={{color: WHITE_COLOR}}>
+                      {(route.params as IPrayer).title}
+                    </Text>
+                    <Text style={{color: WHITE_COLOR}}>
+                      in {column?.title} by {user}
+                    </Text>
+                  </>
+                );
+              },
               headerStyle: {backgroundColor: SECONDARY_COLOR},
               headerRight: () => (
                 <TouchableOpacity style={styles.icon} onPress={() => {}}>

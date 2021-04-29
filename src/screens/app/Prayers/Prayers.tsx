@@ -1,27 +1,31 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Animated, FlatList, RefreshControl, View} from 'react-native';
+import {Animated, FlatList, RefreshControl, Text, View} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
 import {
   CONTAINER_HORIZONTAL_PADDING,
   DANGER_COLOR,
+  DEFAULT_SPACE,
   PRIMARY_COLOR,
   SECONDARY_TEXT_SIZE,
+  styles,
 } from '../../../assets';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {
   addPrayer,
   deletePrayer,
   getPrayers,
+  selectCheckedPrayersByColumnId,
   selectPrayersByColumnId,
   selectPrayersIsLoading,
+  selectUncheckedPrayersByColumnId,
 } from '../../../state/ducks/prayers/prayersSlice';
 import {RootState} from '../../../state/store';
-import {Input} from '../../../ui';
+import {Button, Input} from '../../../ui';
 import {PrayerItem} from '../../../components/PrayerItem/PrayerItem';
 import {ListDivider} from '../../../ui';
 import {IColumn} from '../../../interfaces/IColumn';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 
 interface CardsProps {
@@ -92,8 +96,11 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
   const {control, handleSubmit} = useForm<AddPrayerForm>();
 
   const dispatch = useAppDispatch();
-  const prayers = useAppSelector((state: RootState) =>
-    selectPrayersByColumnId(state, column.id),
+  const uncheckedPrayers = useAppSelector((state: RootState) =>
+    selectUncheckedPrayersByColumnId(state, column.id),
+  );
+  const checkedPrayers = useAppSelector((state: RootState) =>
+    selectCheckedPrayersByColumnId(state, column.id),
   );
   const isLoading = useAppSelector(selectPrayersIsLoading);
 
@@ -101,11 +108,14 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
     dispatch(addPrayer({...data, column: column.id}));
   };
 
+  const [isShowAnsweredPrayers, setIsShowAnsweredPrayes] = useState(false);
+
   return (
-    <View
+    <ScrollView
+      nestedScrollEnabled={true}
       style={{
+        height: '100%',
         backgroundColor: '#ffffff',
-        flex: 1,
         paddingVertical: CONTAINER_HORIZONTAL_PADDING,
       }}>
       <View style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}>
@@ -125,9 +135,11 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
         />
       </View>
       <FlatList
-        data={prayers}
+        style={{flexGrow: 0}}
+        data={uncheckedPrayers}
         renderItem={({item}) => <PrayerSwipableItem item={item} />}
         keyExtractor={item => `id:${item.id}`}
+        scrollEnabled={false}
         refreshControl={
           <RefreshControl
             tintColor={PRIMARY_COLOR}
@@ -136,6 +148,38 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
           />
         }
       />
-    </View>
+      {checkedPrayers.length > 0 && (
+        <Button
+          style={{width: 300, alignSelf: 'center'}}
+          onPress={() => setIsShowAnsweredPrayes(!isShowAnsweredPrayers)}>
+          <Text
+            style={[
+              styles.button,
+              {textTransform: 'uppercase', fontWeight: '500'},
+            ]}>
+            {isShowAnsweredPrayers
+              ? 'Hide Answered Prayers'
+              : 'Show Answered Prayers'}
+          </Text>
+        </Button>
+      )}
+      {isShowAnsweredPrayers && (
+        <FlatList
+          style={{flexGrow: 0}}
+          data={checkedPrayers}
+          ListHeaderComponent={ListDivider}
+          renderItem={({item}) => <PrayerSwipableItem item={item} />}
+          keyExtractor={item => `id:${item.id}`}
+          scrollEnabled={false}
+          refreshControl={
+            <RefreshControl
+              tintColor={PRIMARY_COLOR}
+              refreshing={isLoading}
+              onRefresh={() => dispatch(getPrayers())}
+            />
+          }
+        />
+      )}
+    </ScrollView>
   );
 };

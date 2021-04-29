@@ -7,7 +7,10 @@ import {PRIMARY_COLOR, SMALL_SPACE, styles} from '../../assets';
 import {IPrayer} from '../../interfaces/IPrayer';
 import {PRAYER_DETAILS_SCREEN} from '../../navigation/constants';
 import {selectCommentsCountByPrayerId} from '../../state/ducks/comments/commentsSlice';
-import {editPrayerTitle} from '../../state/ducks/prayers/prayersSlice';
+import {
+  editPrayerTitle,
+  setPrayerIsChecked,
+} from '../../state/ducks/prayers/prayersSlice';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {RootState} from '../../state/store';
 import {Checkbox, Input, Mark, MessageIcon, PrayerIcon} from '../../ui';
@@ -31,6 +34,8 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
     navigation.navigate(PRAYER_DETAILS_SCREEN, prayer);
   };
 
+  const [isChecked, setIsChecked] = useState(prayer.isChecked);
+
   return (
     <TouchableOpacity
       style={styles.prayerItemContainer}
@@ -40,10 +45,22 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
         inputRef.current?.focus();
       }}>
       <Mark />
-      <Checkbox></Checkbox>
+      <Checkbox
+        value={isChecked}
+        onPress={() => {
+          dispatch(setPrayerIsChecked({id: prayer.id, isChecked: !isChecked}));
+          setIsChecked(!isChecked);
+        }}></Checkbox>
 
       <Input
-        style={[styles.cardText, {marginRight: SMALL_SPACE, flex: 0.5}]}
+        style={[
+          styles.cardText,
+          {
+            marginRight: SMALL_SPACE,
+            flex: 0.5,
+            textDecorationLine: isChecked ? 'line-through' : 'none',
+          },
+        ]}
         ref={inputRef}
         value={title}
         onChangeText={text => setTitle(text)}
@@ -68,8 +85,14 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
       <Text style={[styles.cardSmallText, {marginRight: SMALL_SPACE}]}>
         127
       </Text>
-      <MessageIcon width={21} height={18} color={PRIMARY_COLOR} />
-      <Text style={styles.cardSmallText}>{commentsCount}</Text>
+      {commentsCount > 0 ? (
+        <>
+          <MessageIcon width={21} height={18} color={PRIMARY_COLOR} />
+          <Text style={styles.cardSmallText}>{commentsCount}</Text>
+        </>
+      ) : (
+        <></>
+      )}
     </TouchableOpacity>
   );
 };
