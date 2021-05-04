@@ -9,26 +9,32 @@ interface InfoBlockProps {}
 
 export const InfoBlock: React.FC<InfoBlockProps> = () => {
   return (
-    <FlatList
-      style={{flexGrow: 0}}
-      data={infoItemData}
-      scrollEnabled={false}
-      renderItem={({item, index}) => (
-        <InfoItemContainer index={index}>
-          <InfoItem {...item} />
-        </InfoItemContainer>
-      )}
-      numColumns={2}
-      keyExtractor={item => `id:${item.id}`}
-      ItemSeparatorComponent={ListDivider}
-      ListFooterComponent={ListDivider}
-      ListHeaderComponent={ListDivider}
-    />
+    <>
+      <ListDivider />
+      <List>
+        {infoItemData.map((i, index) => (
+          <InfoItemContainer index={index} length={infoItemData.length}>
+            <InfoItem {...i} />
+          </InfoItemContainer>
+        ))}
+      </List>
+      <ListDivider />
+    </>
   );
 };
 
-const InfoItemContainer = styled.View<{index: number}>`
-  flex: 0.5;
+const InfoItemContainer = styled.View<{index: number; length: number}>`
+  width: 50%;
   ${({index, theme}) =>
     index % 2 !== 0 && `borderLeftWidth: 1; borderColor: ${theme.colors.line};`}
+  ${({index, length, theme}) =>
+    index < length - 2 &&
+    `borderBottomWidth: 1; borderColor: ${theme.colors.line};`}
+`;
+
+const List = styled.View`
+  flex: 1;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: flex-start;
 `;

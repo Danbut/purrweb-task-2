@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useContext, useRef, useState} from 'react';
 import {TextInput} from 'react-native';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import styled, {ThemeContext} from 'styled-components/native';
 import {IPrayer} from '../../interfaces/IPrayer';
 import {PRAYER_DETAILS_SCREEN} from '../../navigation/constants';
@@ -93,7 +94,7 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
   );
 };
 
-const PrayerBox = styled.TouchableOpacity`
+const PrayerBox = styled(TouchableOpacity)`
   flex-direction: row;
   padding-vertical: ${({theme}) => theme.spaces.default};
   align-items: center;

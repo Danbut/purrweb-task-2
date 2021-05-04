@@ -35,25 +35,23 @@ export const CommentsList: React.FC<CommentsListProps> = ({prayerId}) => {
   return (
     <View>
       <Subtitle>Comments</Subtitle>
-      <FlatList
-        data={comments}
-        renderItem={({item}) => <Comment {...item} />}
-        scrollEnabled={false}
-        ItemSeparatorComponent={ListDivider}
-        ListFooterComponent={ListDivider}
-        ListHeaderComponent={ListDivider}
-        keyExtractor={item => `id:${item.id}`}
-        refreshControl={
-          <RefreshControl
-            tintColor={theme.colors.primary}
-            refreshing={isLoading}
-            onRefresh={() => dispatch(getComments())}
-          />
-        }
-        ListEmptyComponent={
+      {comments.length > 0 ? (
+        <>
+          <ListDivider />
+          {comments.map(c => (
+            <>
+              <Comment {...c} />
+              <ListDivider />
+            </>
+          ))}
+        </>
+      ) : (
+        <>
+          <ListDivider />
           <ListEmptyComponent>No comments</ListEmptyComponent>
-        }
-      />
+          <ListDivider />
+        </>
+      )}
     </View>
   );
 };

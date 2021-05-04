@@ -17,7 +17,7 @@ export const PrayerDetails: React.FC<PrayerDetailsProps> = () => {
 
   return (
     <Container padding={0}>
-      <ScrollView nestedScrollEnabled={true}>
+      <ScrollView>
         <MarkContainer>
           <Mark />
           <MarkText>Last prayed 8 min ago</MarkText>
