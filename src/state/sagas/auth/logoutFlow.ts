@@ -2,7 +2,7 @@ import {Alert} from 'react-native';
 import {call} from 'redux-saga/effects';
 import {storage} from '../../../services/storage';
 
-export function* handleLogout(action) {
+export function* logoutFlow() {
   try {
     yield call(storage.removeToken.bind(storage));
   } catch (error) {

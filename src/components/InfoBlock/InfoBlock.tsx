@@ -1,5 +1,4 @@
 import React from 'react';
-import {FlatList} from 'react-native-gesture-handler';
 import {infoItemData} from '../../screens/app/PrayerDetails/constants';
 import {InfoItem} from '../InfoItem';
 import {ListDivider} from '../../ui';

@@ -26,10 +26,15 @@ export const commentsSlice = createSlice({
       state.comments = action.payload;
       state.isLoading = false;
     },
-    addComment: (state, action) => {
+    setComment: (state, action) => {
       state.comments = [...state.comments, action.payload];
+      state.isLoading = false;
     },
-    deleteComment: (state, action) => {
+    deleteComment: state => {
+      state.isLoading = true;
+    },
+    removeComment: (state, action) => {
+      state.isLoading = false;
       state.comments = state.comments.filter(c => action.payload.id !== c.id);
     },
     updateComment: (state, action) => {
@@ -39,9 +44,14 @@ export const commentsSlice = createSlice({
         }
         return c;
       });
+      state.isLoading = false;
     },
-    editComment: (state, action) => {},
-    sendComment: (state, action) => {},
+    editComment: (state, action) => {
+      state.isLoading = true;
+    },
+    sendComment: (state, action) => {
+      state.isLoading = true;
+    },
   },
 });
 
@@ -49,6 +59,15 @@ export const sendComment: ActionCreatorWithPayload<{
   text: string;
   prayerId: string;
 }> = commentsSlice.actions.sendComment;
+
+export const editComment: ActionCreatorWithPayload<{
+  id: string;
+  text: string;
+}> = commentsSlice.actions.editComment;
+
+export const deleteComment: ActionCreatorWithPayload<{
+  id: string;
+}> = commentsSlice.actions.editComment;
 
 export const selectComments = (state: RootState) => state.comments.comments;
 export const selectCommentsIsLoading = (state: RootState) =>
@@ -72,9 +91,9 @@ export const selectCommentsByCommentsIds = (
 export const {
   setComments,
   getComments,
-  addComment,
-  deleteComment,
-  editComment,
+  setComment,
+  removeComment,
+  updateComment,
 } = commentsSlice.actions;
 
 export default commentsSlice.reducer;

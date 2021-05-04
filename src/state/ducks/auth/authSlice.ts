@@ -1,18 +1,16 @@
-import {createSlice} from '@reduxjs/toolkit';
+import {ActionCreatorWithPayload, createSlice} from '@reduxjs/toolkit';
 import {RootState} from '../../store';
 import {IUser} from '../../../interfaces/IUser';
 
 interface AuthState {
   token: string | null;
   isLoading: boolean;
-  isPreload: boolean;
   user: IUser | null;
 }
 
 const initialState: AuthState = {
   token: null,
   isLoading: false,
-  isPreload: false,
   user: null,
 };
 
@@ -22,20 +20,36 @@ export const authSlice = createSlice({
   reducers: {
     setUser: (state, action) => {
       state.user = action.payload;
+      state.isLoading = false;
     },
     setToken: (state, action) => {
       state.token = action.payload;
     },
-    signIn: () => {},
-    signUp: () => {},
     logout: state => {
       state.token = null;
       state.user = null;
     },
+    signIn: state => {
+      state.isLoading = true;
+    },
+    signUp: state => {
+      state.isLoading = true;
+    },
   },
 });
 
-export const {setUser, setToken, signIn, signUp, logout} = authSlice.actions;
+export const {setUser, setToken, logout} = authSlice.actions;
+
+export const signIn: ActionCreatorWithPayload<{
+  email: string;
+  password: string;
+}> = authSlice.actions.signIn;
+
+export const signUp: ActionCreatorWithPayload<{
+  name: string;
+  email: string;
+  password: string;
+}> = authSlice.actions.signUp;
 
 export const selectToken = (state: RootState) => state.auth.token;
 export const selectName = (state: RootState) => state.auth.user?.name;

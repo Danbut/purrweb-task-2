@@ -38,6 +38,19 @@ export const columnsSlice = createSlice({
     addColumn: state => {
       state.isLoading = true;
     },
+    setColumn: (state, action) => {
+      state.columns = [...state.columns, action.payload].sort((a, b) => {
+        if (a.id > b.id) {
+          return -1;
+        }
+        if (a.id < b.id) {
+          return 1;
+        }
+
+        return 0;
+      });
+      state.isLoading = false;
+    },
   },
 });
 
@@ -51,6 +64,8 @@ export const renameColumn: ActionCreatorWithPayload<{
   columnId: string;
   title: string;
 }> = columnsSlice.actions.renameColumn;
+export const setColumn: ActionCreatorWithPayload<IColumn> =
+  columnsSlice.actions.setColumn;
 
 export const {setColumns, getColumns, addColumn} = columnsSlice.actions;
 

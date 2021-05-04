@@ -3,10 +3,10 @@ import {
   configureStore,
   getDefaultMiddleware,
 } from '@reduxjs/toolkit';
-import authReducer from './ducks/auth/authSlice';
-import columnsReducer from './ducks/columns/columnsSlice';
-import prayersReducer from './ducks/prayers/prayersSlice';
-import commentsReducer from './ducks/comments/commentsSlice';
+import authReducer from './ducks/auth';
+import columnsReducer from './ducks/columns';
+import prayersReducer from './ducks/prayers';
+import commentsReducer from './ducks/comments';
 import createSagaMiddleware from 'redux-saga';
 import {watcherSaga} from './sagas/watcherSaga';
 import AsyncStorage from '@react-native-async-storage/async-storage';

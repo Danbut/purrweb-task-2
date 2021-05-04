@@ -44,12 +44,24 @@ export const prayersSlice = createSlice({
           return p;
         }
       });
+      state.isLoading = false;
     },
-    deletePrayer: (state, action) => {
+    deletePrayer: state => {
+      state.isLoading = true;
+    },
+    removePrayer: (state, action) => {
       state.prayers = state.prayers.filter(p => action.payload.id !== p.id);
+      state.isLoading = false;
     },
-    editPrayerTitle: () => {},
-    setPrayerIsChecked: () => {},
+    editPrayerTitle: state => {
+      state.isLoading = true;
+    },
+    setPrayerIsChecked: state => {
+      state.isLoading = true;
+    },
+    updatePrayerDescription: state => {
+      state.isLoading = true;
+    },
   },
 });
 
@@ -61,7 +73,7 @@ export const addPrayer: ActionCreatorWithPayload<{
 export const updatePrayerDescription: ActionCreatorWithPayload<{
   description: string;
   id: string;
-}> = prayersSlice.actions.addPrayer;
+}> = prayersSlice.actions.updatePrayerDescription;
 export const setPrayerIsChecked: ActionCreatorWithPayload<{
   id: string;
   isChecked: boolean;
@@ -81,7 +93,12 @@ export const selectPrayersByColumnId = (state: RootState, columnId: string) =>
   state.prayers.prayers.filter(p => columnId == p.columnId);
 export const selectPrayerById = (state: RootState, prayerId: string) =>
   state.prayers.prayers.find(p => prayerId == p.id);
-export const {setPrayers, getPrayers, updatePrayer} = prayersSlice.actions;
+export const {
+  setPrayers,
+  getPrayers,
+  updatePrayer,
+  removePrayer,
+} = prayersSlice.actions;
 
 export const selectUncheckedPrayersByColumnId = (
   state: RootState,

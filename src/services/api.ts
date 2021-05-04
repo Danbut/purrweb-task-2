@@ -71,7 +71,7 @@ const columns = {
 
     return response.data;
   },
-  renameColumn: async (columnId: number, title: string) => {
+  renameColumn: async (columnId: string, title: string) => {
     const response: AxiosResponse = await httpClient.put(
       `/columns/${columnId}`,
       {
@@ -108,7 +108,7 @@ const prayers = {
     return response.data;
   },
 
-  getPrayerById: async (prayerId: number) => {
+  getPrayerById: async (prayerId: string) => {
     const response: AxiosResponse = await httpClient.get(
       `/prayers/${prayerId}`,
     );
@@ -137,7 +137,7 @@ const prayers = {
     return response.data;
   },
 
-  deletePrayerById: async (prayerId: number) => {
+  deletePrayerById: async (prayerId: string) => {
     const response: AxiosResponse = await httpClient.delete(
       `/prayers/${prayerId}`,
     );
