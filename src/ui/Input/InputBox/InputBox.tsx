@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import {LINE_COLOR} from '../../../assets';
 
 export interface InputBoxProps {
   borderRadius?: number;
@@ -8,7 +7,8 @@ export interface InputBoxProps {
 }
 
 export const InputBox = styled.View<InputBoxProps>`
-  ${({withBorder}) => (withBorder ? `border: 1px solid ${LINE_COLOR};` : '')}
+  ${({withBorder, theme}) =>
+    withBorder ? `border: 1px solid ${theme.colors.line};` : ''}
   border-radius: ${({borderRadius}) => borderRadius}px;
   display: flex;
   flex-direction: row;

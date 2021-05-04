@@ -1,14 +1,9 @@
 import styled from 'styled-components/native';
-import {
-  CONTAINER_HORIZONTAL_PADDING,
-  PRIMARY_COLOR,
-  SECONDARY_TEXT_SIZE,
-} from '../../assets';
 
 export const Subtitle = styled.Text`
-  font-size: ${SECONDARY_TEXT_SIZE};
-  color: ${PRIMARY_COLOR};
+  font-size: ${({theme}) => theme.size.secondary};
+  color: ${({theme}) => theme.colors.primary};
   text-transform: uppercase;
   font-weight: 600;
-  padding: ${CONTAINER_HORIZONTAL_PADDING}px;
+  padding: ${({theme}) => theme.spaces.container}px;
 `;

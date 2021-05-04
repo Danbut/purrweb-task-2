@@ -1,19 +1,14 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {ActivityIndicator, Text} from 'react-native';
 import {useAppDispatch, useAppSelector} from '../../state/hooks';
 import {Container, Input, Button} from '../../ui';
-import {
-  styles,
-  PRIMARY_COLOR,
-  CONTAINER_HORIZONTAL_PADDING,
-  WELCOME_TEXT,
-} from '../../assets';
 import {selectAuthIsLoading, signUp} from '../../state/ducks/auth/authSlice';
 import {useNavigation} from '@react-navigation/native';
 import {signUpSchema} from './validationSchemas';
 import {SIGN_IN_SCREEN} from '../../navigation/constants';
 import {Controller, useForm} from 'react-hook-form';
 import {yupResolver} from '@hookform/resolvers/yup';
+import styled, {ThemeContext} from 'styled-components/native';
 
 interface SignUpProps {}
 
@@ -41,11 +36,13 @@ export const SignUp: React.FC<SignUpProps> = () => {
 
   const navigation = useNavigation();
 
-  return (
-    <Container padding={CONTAINER_HORIZONTAL_PADDING}>
-      <Text style={styles.header}>{WELCOME_TEXT}</Text>
+  const theme = useContext(ThemeContext);
 
-      <Text style={styles.title}>Signing up, please</Text>
+  return (
+    <Container padding={theme.spaces.container}>
+      <Header>Welcome to Prayer App!</Header>
+
+      <Title>Signing up, please</Title>
 
       <Controller
         control={control}
@@ -69,6 +66,8 @@ export const SignUp: React.FC<SignUpProps> = () => {
             label="Email"
             ref={ref}
             value={value}
+            autoCapitalize="none"
+            autoCorrect={false}
             onChangeText={onChange}
             placeholder="Enter your email"
             errors={{message: errors?.email?.message}}
@@ -94,17 +93,40 @@ export const SignUp: React.FC<SignUpProps> = () => {
       />
 
       <Button onPress={handleSubmit(onSubmit)}>
-        <Text style={styles.button}>Sign up</Text>
+        <ButtonText>Sign up</ButtonText>
       </Button>
 
-      <Text
-        style={styles.link}
-        onPress={() => navigation.navigate(SIGN_IN_SCREEN)}>
+      <Link onPress={() => navigation.navigate(SIGN_IN_SCREEN)}>
         Already have an account? Sign in
-      </Text>
+      </Link>
       {isLoading ? (
-        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       ) : null}
     </Container>
   );
 };
+
+const Header = styled.Text`
+  font-size: ${({theme}) => theme.size.large};
+  align-self: center;
+  margin-bottom: ${({theme}) => theme.spaces.default};
+  margin-top: ${({theme}) => theme.spaces.large};
+`;
+
+const Title = styled.Text`
+  font-size: ${({theme}) => theme.size.primary};
+  margin-bottom: ${({theme}) => theme.spaces.default};
+  align-self: center;
+`;
+
+const Link = styled.Text`
+  color: ${({theme}) => theme.colors.text.secondary};
+  font-size: ${({theme}) => theme.size.secondary};
+  text-decoration-line: underline;
+  text-align: center;
+`;
+
+const ButtonText = styled.Text`
+  color: ${({theme}) => theme.colors.white};
+  text-align: center;
+`;

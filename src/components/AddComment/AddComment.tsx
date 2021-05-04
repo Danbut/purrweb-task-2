@@ -1,9 +1,8 @@
 import React from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
-import {CONTAINER_HORIZONTAL_PADDING} from '../../assets';
+import styled from 'styled-components/native';
 import {sendComment} from '../../state/ducks/comments/commentsSlice';
 import {Input} from '../../ui';
 import {SendMessageIcon} from '../../ui/Icons/SendMessageIcon';
@@ -26,7 +25,7 @@ export const AddComment: React.FC<AddCommentProps> = ({prayerId}) => {
   };
 
   return (
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <Container>
       <Controller
         control={control}
         render={({field: {value, onChange, ref}}) => (
@@ -37,17 +36,25 @@ export const AddComment: React.FC<AddCommentProps> = ({prayerId}) => {
             icon={'message'}
             placeholder="Add a comment..."
             withBorder={false}
-            style={{flex: 0.8}}
           />
         )}
         name="text"
       />
-      <View
-        style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING, flex: 0.2}}>
+      <PaddingHorizontalContainer>
         <TouchableOpacity onPress={handleSubmit(onSubmit)}>
           <SendMessageIcon width={28} height={28} />
         </TouchableOpacity>
-      </View>
-    </View>
+      </PaddingHorizontalContainer>
+    </Container>
   );
 };
+
+const Container = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const PaddingHorizontalContainer = styled.View`
+  padding-horizontal: ${({theme}) => theme.spaces.container};
+`;

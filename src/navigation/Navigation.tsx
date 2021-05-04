@@ -1,7 +1,7 @@
 import {NavigationContainer, useRoute} from '@react-navigation/native';
 import {createStackNavigator} from '@react-navigation/stack';
-import React from 'react';
-import {ActivityIndicator, Text, View} from 'react-native';
+import React, {useContext} from 'react';
+import {ActivityIndicator} from 'react-native';
 import {
   logout,
   selectAuthIsPreload,
@@ -11,16 +11,6 @@ import {
 import {useAppDispatch, useAppSelector} from '../state/hooks';
 import {Desk} from '../screens/app/Desk/Desk';
 import {SignIn, SignUp} from '../screens/auth';
-import {
-  styles,
-  PRIMARY_COLOR,
-  PRIMARY_TEXT_COLOR,
-  SECONDARY_TEXT_COLOR,
-  SECONDARY_TEXT_SIZE,
-  SECONDARY_COLOR,
-  WHITE_COLOR,
-} from '../assets';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {
   COLUMN_SCREEN,
   DESK_SCREEN,
@@ -38,6 +28,7 @@ import {PrayerDetails} from '../screens/app/PrayerDetails/PrayerDetails';
 import {IColumn} from '../interfaces/IColumn';
 import {IPrayer} from '../interfaces/IPrayer';
 import {RootState} from '../state/store';
+import styled, {ThemeContext} from 'styled-components/native';
 
 const Tab = createMaterialTopTabNavigator();
 
@@ -47,11 +38,12 @@ export const Navigation: React.FC = () => {
   const token = useAppSelector(selectToken);
   const dispatch = useAppDispatch();
   const isPreload = useAppSelector(selectAuthIsPreload);
+  const theme = useContext(ThemeContext);
 
   return (
     <NavigationContainer>
       {isPreload ? (
-        <ActivityIndicator size="large" color={PRIMARY_COLOR} />
+        <ActivityIndicator size="large" color={theme.colors.primary} />
       ) : token ? (
         <Stack.Navigator>
           <Stack.Screen
@@ -59,24 +51,22 @@ export const Navigation: React.FC = () => {
             component={Desk}
             options={{
               headerTitle: 'My Desk',
-              headerTintColor: PRIMARY_TEXT_COLOR,
+              headerTintColor: theme.colors.text.primary,
               headerRight: () => (
-                <TouchableOpacity
-                  style={styles.icon}
+                <IconButton
                   onPress={() => {
                     dispatch(addColumn());
                   }}>
                   <PlusIcon width={16} height={16} />
-                </TouchableOpacity>
+                </IconButton>
               ),
               headerLeft: () => (
-                <TouchableOpacity
-                  style={styles.icon}
+                <IconButton
                   onPress={() => {
                     dispatch(logout());
                   }}>
                   <LogoutIcon width={24} height={24} />
-                </TouchableOpacity>
+                </IconButton>
               ),
             }}
           />
@@ -88,11 +78,11 @@ export const Navigation: React.FC = () => {
               return (
                 <Tab.Navigator
                   tabBarOptions={{
-                    activeTintColor: PRIMARY_COLOR,
-                    inactiveTintColor: SECONDARY_TEXT_COLOR,
-                    labelStyle: {fontSize: SECONDARY_TEXT_SIZE},
+                    activeTintColor: theme.colors.primary,
+                    inactiveTintColor: theme.colors.text.secondary,
+                    labelStyle: {fontSize: theme.size.secondary},
                     indicatorStyle: {
-                      backgroundColor: PRIMARY_COLOR,
+                      backgroundColor: theme.colors.primary,
                     },
                   }}>
                   <Tab.Screen
@@ -108,11 +98,11 @@ export const Navigation: React.FC = () => {
             }}
             options={({route}) => ({
               headerTitle: (route.params as IColumn).title,
-              headerTintColor: PRIMARY_TEXT_COLOR,
+              headerTintColor: theme.colors.text.primary,
               headerRight: () => (
-                <TouchableOpacity style={styles.icon} onPress={() => {}}>
+                <IconButton>
                   <SettingsIcon width={24} height={24} />
-                </TouchableOpacity>
+                </IconButton>
               ),
               //TODO: change backbutton color
               headerBackTitleVisible: false,
@@ -129,23 +119,25 @@ export const Navigation: React.FC = () => {
                 const user = useAppSelector(selectName);
                 return (
                   <>
-                    <Text style={{color: WHITE_COLOR}}>
-                      {(route.params as IPrayer).title}
-                    </Text>
-                    <Text style={{color: WHITE_COLOR}}>
+                    <Title>{(route.params as IPrayer).title}</Title>
+                    <Title>
                       in {column?.title} by {user}
-                    </Text>
+                    </Title>
                   </>
                 );
               },
-              headerStyle: {backgroundColor: SECONDARY_COLOR},
+              headerStyle: {backgroundColor: theme.colors.secondary},
               headerRight: () => (
-                <TouchableOpacity style={styles.icon} onPress={() => {}}>
-                  <PrayerIcon width={24} height={24} color={WHITE_COLOR} />
-                </TouchableOpacity>
+                <IconButton>
+                  <PrayerIcon
+                    width={24}
+                    height={24}
+                    color={theme.colors.white}
+                  />
+                </IconButton>
               ),
               headerBackTitleVisible: false,
-              headerTintColor: WHITE_COLOR,
+              headerTintColor: theme.colors.white,
             })}
           />
         </Stack.Navigator>
@@ -166,3 +158,11 @@ export const Navigation: React.FC = () => {
     </NavigationContainer>
   );
 };
+
+const IconButton = styled.TouchableOpacity`
+  padding: ${({theme}) => theme.spaces.container}px;
+`;
+
+const Title = styled.Text`
+  color: ${({theme}) => theme.colors.white};
+`;

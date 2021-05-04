@@ -1,9 +1,7 @@
 import {useNavigation} from '@react-navigation/core';
-import React, {useRef, useState} from 'react';
-import {Text, TextInput} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
-
-import {PRIMARY_COLOR, SMALL_SPACE, styles} from '../../assets';
+import React, {useContext, useRef, useState} from 'react';
+import {TextInput} from 'react-native';
+import styled, {ThemeContext} from 'styled-components/native';
 import {IPrayer} from '../../interfaces/IPrayer';
 import {PRAYER_DETAILS_SCREEN} from '../../navigation/constants';
 import {selectCommentsCountByPrayerId} from '../../state/ducks/comments/commentsSlice';
@@ -36,9 +34,10 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
 
   const [isChecked, setIsChecked] = useState(prayer.isChecked);
 
+  const theme = useContext(ThemeContext);
+
   return (
-    <TouchableOpacity
-      style={styles.prayerItemContainer}
+    <PrayerBox
       onPress={openDetails}
       onLongPress={() => {
         setIsRenaming(true);
@@ -53,14 +52,13 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
         }}></Checkbox>
 
       <Input
-        style={[
-          styles.cardText,
-          {
-            marginRight: SMALL_SPACE,
-            flex: 0.5,
-            textDecorationLine: isChecked ? 'line-through' : 'none',
-          },
-        ]}
+        style={{
+          fontSize: theme.size.primary, //TODO: pass styled input?
+          color: theme.colors.text.primary,
+          marginRight: theme.spaces.small,
+          flex: 0.5,
+          textDecorationLine: isChecked ? 'line-through' : 'none',
+        }}
         ref={inputRef}
         value={title}
         onChangeText={text => setTitle(text)}
@@ -80,19 +78,29 @@ export const PrayerItem: React.FC<PrayerItemProps> = ({prayer}) => {
       />
 
       <UserIcon width={20} height={17} />
-      <Text style={[styles.cardSmallText, {marginRight: SMALL_SPACE}]}>3</Text>
+      <PrayerSmallText>3</PrayerSmallText>
       <PrayerIcon width={21} height={18} />
-      <Text style={[styles.cardSmallText, {marginRight: SMALL_SPACE}]}>
-        127
-      </Text>
+      <PrayerSmallText>127</PrayerSmallText>
       {commentsCount > 0 ? (
         <>
-          <MessageIcon width={21} height={18} color={PRIMARY_COLOR} />
-          <Text style={styles.cardSmallText}>{commentsCount}</Text>
+          <MessageIcon width={21} height={18} color={theme.colors.primary} />
+          <PrayerSmallText>{commentsCount}</PrayerSmallText>
         </>
       ) : (
         <></>
       )}
-    </TouchableOpacity>
+    </PrayerBox>
   );
 };
+
+const PrayerBox = styled.TouchableOpacity`
+  flex-direction: row;
+  padding-vertical: ${({theme}) => theme.spaces.default};
+  align-items: center;
+`;
+
+const PrayerSmallText = styled.Text`
+  font-size: ${({theme}) => theme.size.secondary};
+  color: ${({theme}) => theme.colors.text.primary};
+  margin-right: ${({theme}) => theme.spaces.small};
+`;

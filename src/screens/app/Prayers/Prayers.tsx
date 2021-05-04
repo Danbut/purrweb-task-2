@@ -1,22 +1,13 @@
-import React, {useState} from 'react';
+import React, {useContext, useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {Animated, FlatList, RefreshControl, Text, View} from 'react-native';
+import {Animated, FlatList, RefreshControl, View} from 'react-native';
 import Swipeable from 'react-native-gesture-handler/Swipeable';
-import {
-  CONTAINER_HORIZONTAL_PADDING,
-  DANGER_COLOR,
-  DEFAULT_SPACE,
-  PRIMARY_COLOR,
-  SECONDARY_TEXT_SIZE,
-  styles,
-} from '../../../assets';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
 import {
   addPrayer,
   deletePrayer,
   getPrayers,
   selectCheckedPrayersByColumnId,
-  selectPrayersByColumnId,
   selectPrayersIsLoading,
   selectUncheckedPrayersByColumnId,
 } from '../../../state/ducks/prayers/prayersSlice';
@@ -25,8 +16,9 @@ import {Button, Input} from '../../../ui';
 import {PrayerItem} from '../../../components/PrayerItem/PrayerItem';
 import {ListDivider} from '../../../ui';
 import {IColumn} from '../../../interfaces/IColumn';
-import {ScrollView, TouchableOpacity} from 'react-native-gesture-handler';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
+import styled, {ThemeContext} from 'styled-components/native';
 
 interface CardsProps {
   column: IColumn;
@@ -38,30 +30,14 @@ const renderRightActions = (onPress, dragX) => {
     inputRange: [0, 50],
     outputRange: [100, 150],
   });
+
   return (
     <TouchableOpacity onPress={onPress}>
-      <Animated.View
-        style={{
-          backgroundColor: DANGER_COLOR,
-          width: 100,
-          height: '100%',
-          transform: [{translateX: trans}],
-          justifyContent: 'center',
-        }}>
-        <Animated.Text
-          style={[
-            {
-              color: '#ffffff',
-              fontSize: SECONDARY_TEXT_SIZE,
-              textAlign: 'center',
-            },
-            {
-              transform: [{translateX: trans}],
-            },
-          ]}>
+      <DeleteButton style={{transform: [{translateX: trans}]}}>
+        <DeleteButtonText style={{transform: [{translateX: trans}]}}>
           Delete
-        </Animated.Text>
-      </Animated.View>
+        </DeleteButtonText>
+      </DeleteButton>
     </TouchableOpacity>
   );
 };
@@ -76,14 +52,11 @@ const PrayerSwipableItem: React.FC<any> = ({item}) => {
           dispatch(deletePrayer({id: item.id}));
         }, dragX)
       }>
-      <View
-        style={{
-          paddingHorizontal: CONTAINER_HORIZONTAL_PADDING,
-        }}>
+      <PaddingHorizontalContainer>
         <ListDivider>
           <PrayerItem prayer={item} />
         </ListDivider>
-      </View>
+      </PaddingHorizontalContainer>
     </Swipeable>
   );
 };
@@ -108,17 +81,13 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
     dispatch(addPrayer({...data, column: column.id}));
   };
 
+  const theme = useContext(ThemeContext);
+
   const [isShowAnsweredPrayers, setIsShowAnsweredPrayes] = useState(false);
 
   return (
-    <ScrollView
-      nestedScrollEnabled={true}
-      style={{
-        height: '100%',
-        backgroundColor: '#ffffff',
-        paddingVertical: CONTAINER_HORIZONTAL_PADDING,
-      }}>
-      <View style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}>
+    <Container nestedScrollEnabled={true}>
+      <PaddingHorizontalContainer>
         <Controller
           control={control}
           render={({field: {value, onChange, ref}}) => (
@@ -133,7 +102,7 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
           )}
           name="title"
         />
-      </View>
+      </PaddingHorizontalContainer>
       <FlatList
         style={{flexGrow: 0}}
         data={uncheckedPrayers}
@@ -142,7 +111,7 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
         scrollEnabled={false}
         refreshControl={
           <RefreshControl
-            tintColor={PRIMARY_COLOR}
+            tintColor={theme.colors.primary}
             refreshing={isLoading}
             onRefresh={() => dispatch(getPrayers())}
           />
@@ -152,15 +121,11 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
         <Button
           style={{width: 300, alignSelf: 'center'}}
           onPress={() => setIsShowAnsweredPrayes(!isShowAnsweredPrayers)}>
-          <Text
-            style={[
-              styles.button,
-              {textTransform: 'uppercase', fontWeight: '500'},
-            ]}>
+          <ButtonText>
             {isShowAnsweredPrayers
               ? 'Hide Answered Prayers'
               : 'Show Answered Prayers'}
-          </Text>
+          </ButtonText>
         </Button>
       )}
       {isShowAnsweredPrayers && (
@@ -173,13 +138,47 @@ export const Cards: React.FC<CardsProps> = ({column}) => {
           scrollEnabled={false}
           refreshControl={
             <RefreshControl
-              tintColor={PRIMARY_COLOR}
+              tintColor={theme.colors.primary}
               refreshing={isLoading}
               onRefresh={() => dispatch(getPrayers())}
             />
           }
         />
       )}
-    </ScrollView>
+    </Container>
   );
 };
+
+const Container = styled.ScrollView`
+  height: 100%;
+  background-color: ${({theme}) => theme.colors.white};
+  padding-vertical: ${({theme}) => theme.spaces.container};
+`;
+
+// const PaddingHorizontalContainer = styled.View`
+//   padding-horizontal: ${({theme}) => theme.spaces.container};
+// `;
+
+const ButtonText = styled.Text`
+  color: ${({theme}) => theme.colors.white};
+  text-align: center;
+  text-transform: uppercase;
+  font-weight: 500;
+`;
+
+const DeleteButton = styled(Animated.View)`
+  background-color: ${({theme}) => theme.colors.danger};
+  width: 100;
+  height: 100%;
+  justify-content: center;
+`;
+
+const DeleteButtonText = styled(Animated.Text)`
+  color: ${({theme}) => theme.colors.white};
+  font-size: ${({theme}) => theme.size.secondary};
+  text-align: center;
+`;
+
+const PaddingHorizontalContainer = styled.View`
+  padding-horizontal: ${({theme}) => theme.spaces.container};
+`;

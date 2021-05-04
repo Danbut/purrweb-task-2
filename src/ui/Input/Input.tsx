@@ -6,7 +6,6 @@ import {InputWithIconProps} from './InputWithIcon';
 import {StyledTextInputProps} from './StyledTextInput';
 import {InputBoxProps} from './InputBox';
 import styled from 'styled-components/native';
-import {PRIMARY_TEXT_SIZE, SMALL_SPACE} from '../../assets';
 interface InputProps {
   label?: string;
   errors?: {message?: string};
@@ -32,6 +31,6 @@ export const Input: React.FC<
 });
 
 export const Label = styled.Text`
-  margin-bottom: ${SMALL_SPACE};
-  font-size: ${PRIMARY_TEXT_SIZE};
+  margin-bottom: ${({theme}) => theme.spaces.small};
+  font-size: ${({theme}) => theme.size.primary};
 `;

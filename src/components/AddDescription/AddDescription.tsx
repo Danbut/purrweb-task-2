@@ -1,9 +1,7 @@
 import React, {useState} from 'react';
 import {Controller, useForm} from 'react-hook-form';
-import {View} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
-import {CONTAINER_HORIZONTAL_PADDING} from '../../assets';
+import styled from 'styled-components/native';
 import {
   selectPrayerById,
   updatePrayerDescription,
@@ -39,22 +37,16 @@ export const AddDescription: React.FC<AddDescriptionProps> = ({prayerId}) => {
 
   return (
     <>
-      <View
-        style={{
-          flexDirection: 'row',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
+      <Container>
         <Subtitle>Description</Subtitle>
-        <TouchableOpacity
-          style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}
+        <PaddingHorizontalButton
           onPress={() => {
             setIsEditing(true);
           }}>
           <EditIcon />
-        </TouchableOpacity>
-      </View>
-      <View style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}>
+        </PaddingHorizontalButton>
+      </Container>
+      <PaddingHorizontalContainer>
         <Controller
           control={control}
           render={({field: {value, onChange, ref}}) => (
@@ -71,27 +63,39 @@ export const AddDescription: React.FC<AddDescriptionProps> = ({prayerId}) => {
           name="description"
         />
         {isEditing && (
-          <View
-            style={{
-              flexDirection: 'row',
-              alignItems: 'center',
-            }}>
-            <TouchableOpacity
-              style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}
-              onPress={handleSubmit(onSubmit)}>
+          <EditButtonsContainer>
+            <PaddingHorizontalButton onPress={handleSubmit(onSubmit)}>
               <SubmitIcon />
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{paddingHorizontal: CONTAINER_HORIZONTAL_PADDING}}
+            </PaddingHorizontalButton>
+            <PaddingHorizontalButton
               onPress={() => {
                 setValue('description', prayer?.description ?? '');
                 setIsEditing(false);
               }}>
               <CancelIcon width={32} height={32} />
-            </TouchableOpacity>
-          </View>
+            </PaddingHorizontalButton>
+          </EditButtonsContainer>
         )}
-      </View>
+      </PaddingHorizontalContainer>
     </>
   );
 };
+
+const Container = styled.View`
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+const EditButtonsContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+`;
+
+const PaddingHorizontalContainer = styled.View`
+  padding-horizontal: ${({theme}) => theme.spaces.container};
+`;
+
+const PaddingHorizontalButton = styled.TouchableOpacity`
+  padding-horizontal: ${({theme}) => theme.spaces.container};
+`;

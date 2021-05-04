@@ -1,6 +1,6 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {styles} from '../../../assets';
+import {ThemeContext} from 'styled-components/native';
 import {MessageIcon, PlusIcon} from '../../Icons';
 import {StyledTextInput, StyledTextInputProps} from '../StyledTextInput';
 
@@ -12,11 +12,30 @@ export interface InputWithIconProps {
   onPressIcon?: () => void;
 }
 
-const icons = {
-  [PLUS_ICON]: <PlusIcon width={24} height={24} style={styles.inputIcon} />,
-  [MESSAGE_ICON]: (
-    <MessageIcon width={24} height={24} style={styles.inputIcon} />
-  ),
+const Icon: React.FC<{icon: typeof PLUS_ICON | typeof MESSAGE_ICON}> = ({
+  icon,
+}) => {
+  const theme = useContext(ThemeContext);
+
+  if (PLUS_ICON === icon) {
+    return (
+      <PlusIcon
+        width={24}
+        height={24}
+        style={{marginRight: theme.spaces.container}}
+      />
+    );
+  } else if (MESSAGE_ICON === icon) {
+    return (
+      <MessageIcon
+        width={24}
+        height={24}
+        style={{marginRight: theme.spaces.container}}
+      />
+    );
+  } else {
+    return null;
+  }
 };
 
 export const InputWithIcon: React.FC<
@@ -29,10 +48,10 @@ export const InputWithIcon: React.FC<
       {icon &&
         (onPressIcon ? (
           <TouchableOpacity onPress={onPressIcon}>
-            {icons[icon]}
+            <Icon icon={icon} />
           </TouchableOpacity>
         ) : (
-          icons[icon]
+          <Icon icon={icon} />
         ))}
       <StyledTextInput {...props} ref={ref} />
     </>

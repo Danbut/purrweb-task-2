@@ -1,13 +1,11 @@
-import React from 'react';
 import styled from 'styled-components/native';
-import {
-  DANGER_COLOR,
-  PRIMARY_COLOR,
-  SECONDARY_COLOR,
-  SMALL_SPACE,
-} from '../../assets';
+import {theme} from '../../assets';
 
-const cardColors = [DANGER_COLOR, PRIMARY_COLOR, SECONDARY_COLOR];
+const cardColors = [
+  theme.colors.danger,
+  theme.colors.primary,
+  theme.colors.secondary,
+];
 
 export const Mark = styled.View`
   width: 3px;
@@ -16,5 +14,5 @@ export const Mark = styled.View`
   background-color: ${cardColors[
     Math.floor(Math.random() * cardColors.length)
   ]};
-  margin-right: ${SMALL_SPACE};
+  margin-right: ${({theme}) => theme.spaces.small};
 `;

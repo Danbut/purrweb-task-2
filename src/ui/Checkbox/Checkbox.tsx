@@ -1,8 +1,6 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
-import {DEFAULT_SPACE, PRIMARY_COLOR, SMALL_SPACE, styles} from '../../assets';
-
 interface CheckboxProps {
   onPress?: () => void;
   value?: boolean;
@@ -13,8 +11,9 @@ export const StyledCheckbox = styled.View<CheckboxProps>`
   height: 24px;
   border: 1px solid #514d47;
   border-radius: 4px;
-  background-color: ${({value}) => (value ? PRIMARY_COLOR : '#ffffff')};
-  margin-right: ${SMALL_SPACE};
+  background-color: ${({value, theme}) =>
+    value ? theme.colors.primary : theme.colors.white};
+  margin-right: ${({theme}) => theme.spaces.small};
 `;
 
 export const Checkbox: React.FC<CheckboxProps> = ({onPress, value}) => {

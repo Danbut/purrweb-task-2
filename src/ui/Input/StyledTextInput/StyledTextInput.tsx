@@ -1,11 +1,6 @@
 import {TextInput, TextInputProps} from 'react-native';
 import styled from 'styled-components/native';
-import {
-  PRIMARY_COLOR,
-  PRIMARY_TEXT_COLOR,
-  PRIMARY_TEXT_SIZE,
-  SECONDARY_TEXT_COLOR,
-} from '../../../assets';
+import {theme} from '../../../assets';
 
 export interface StyledTextInputProps extends TextInputProps {
   isBold?: boolean;
@@ -13,13 +8,13 @@ export interface StyledTextInputProps extends TextInputProps {
 }
 
 export const StyledTextInput = styled.TextInput<StyledTextInputProps>`
-  color: ${PRIMARY_TEXT_COLOR};
-  font-size: ${PRIMARY_TEXT_SIZE};
+  color: ${({theme}) => theme.colors.text.primary};
+  font-size: ${({theme}) => theme.size.primary};
   ${({isBold}) => (isBold ? 'font-weight: 500;' : '')}
 `;
 
 StyledTextInput.defaultProps = {
   isBold: false,
-  selectionColor: PRIMARY_COLOR,
-  placeholderTextColor: SECONDARY_TEXT_COLOR,
+  selectionColor: theme.colors.primary,
+  placeholderTextColor: theme.colors.text.secondary,
 };

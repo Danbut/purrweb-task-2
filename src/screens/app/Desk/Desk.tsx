@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {FlatList, RefreshControl} from 'react-native';
 import {
   getColumns,
@@ -6,10 +6,10 @@ import {
   selectColumnsIsLoading,
 } from '../../../state/ducks/columns/columnsSlice';
 import {useAppDispatch, useAppSelector} from '../../../state/hooks';
-import {PRIMARY_COLOR, CONTAINER_HORIZONTAL_PADDING} from '../../../assets';
 import {Container} from '../../../ui';
 import {Column} from '../../../components/Column';
 import {getPrayers} from '../../../state/ducks/prayers/prayersSlice';
+import {ThemeContext} from 'styled-components/native';
 
 interface DeskProps {}
 
@@ -21,21 +21,21 @@ export const Desk: React.FC<DeskProps> = () => {
   const columns = useAppSelector(selectColumns);
   const isLoading = useAppSelector(selectColumnsIsLoading);
   const dispatch = useAppDispatch();
-
+  const theme = useContext(ThemeContext);
   useEffect(() => {
     dispatch(getColumns());
     dispatch(getPrayers());
   }, []);
 
   return (
-    <Container padding={CONTAINER_HORIZONTAL_PADDING}>
+    <Container padding={theme.spaces.container}>
       <FlatList
         data={columns}
         renderItem={renderItem}
         keyExtractor={item => `id:${item.id}`}
         refreshControl={
           <RefreshControl
-            tintColor={PRIMARY_COLOR}
+            tintColor={theme.colors.primary}
             refreshing={isLoading}
             onRefresh={() => dispatch(getColumns())}
           />

@@ -1,13 +1,12 @@
 import {useNavigation} from '@react-navigation/core';
 import React, {useRef, useState} from 'react';
 import {TextInput} from 'react-native';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useDispatch} from 'react-redux';
 import {renameColumn} from '../../state/ducks/columns/columnsSlice';
-import {styles} from '../../assets';
 import {COLUMN_SCREEN} from '../../navigation/constants';
 import {Input} from '../../ui';
 import {IColumn} from '../../interfaces/IColumn';
+import styled from 'styled-components/native';
 
 interface ColumnProps {
   column: IColumn;
@@ -21,8 +20,7 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
   const inputRef = useRef<TextInput>();
 
   return (
-    <TouchableOpacity
-      style={styles.column}
+    <ColumnBox
       onLongPress={() => {
         setIsRenaming(true);
         inputRef.current?.focus();
@@ -46,6 +44,10 @@ export const Column: React.FC<ColumnProps> = ({column}) => {
           setIsRenaming(false);
         }}
       />
-    </TouchableOpacity>
+    </ColumnBox>
   );
 };
+
+const ColumnBox = styled.TouchableOpacity`
+  margin-bottom: ${({theme}) => theme.spaces.small};
+`;

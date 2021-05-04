@@ -1,7 +1,6 @@
 import React from 'react';
 import {ViewProps} from 'react-native';
 import {Path, Svg} from 'react-native-svg';
-import {SECONDARY_COLOR} from '../../assets';
 
 interface MessageIconProps extends ViewProps {
   width?: number;

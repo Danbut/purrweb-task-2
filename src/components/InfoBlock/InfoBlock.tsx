@@ -1,9 +1,9 @@
 import React from 'react';
-import {View} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {infoItemData} from '../../screens/app/PrayerDetails/constants';
 import {InfoItem} from '../InfoItem';
 import {ListDivider} from '../../ui';
+import styled from 'styled-components/native';
 
 interface InfoBlockProps {}
 
@@ -14,13 +14,9 @@ export const InfoBlock: React.FC<InfoBlockProps> = () => {
       data={infoItemData}
       scrollEnabled={false}
       renderItem={({item, index}) => (
-        <View
-          style={[
-            {flex: 0.5},
-            index % 2 !== 0 && {borderLeftWidth: 1, borderColor: '#e5e5e5'},
-          ]}>
+        <InfoItemContainer index={index}>
           <InfoItem {...item} />
-        </View>
+        </InfoItemContainer>
       )}
       numColumns={2}
       keyExtractor={item => `id:${item.id}`}
@@ -30,3 +26,9 @@ export const InfoBlock: React.FC<InfoBlockProps> = () => {
     />
   );
 };
+
+const InfoItemContainer = styled.View<{index: number}>`
+  flex: 0.5;
+  ${({index, theme}) =>
+    index % 2 !== 0 && `borderLeftWidth: 1; borderColor: ${theme.colors.line};`}
+`;

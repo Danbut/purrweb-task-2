@@ -1,10 +1,4 @@
 import React from 'react';
-import {Text, View} from 'react-native';
-import {
-  CONTAINER_HORIZONTAL_PADDING,
-  DEFAULT_SPACE,
-  styles,
-} from '../../../assets';
 import {Container, Mark} from '../../../ui';
 import {AddComment} from '../../../components/AddComment';
 import {AddDescription} from '../../../components/AddDescription';
@@ -13,6 +7,7 @@ import {InfoBlock} from '../../../components/InfoBlock/InfoBlock';
 import {useRoute} from '@react-navigation/core';
 import {IPrayer} from '../../../interfaces/IPrayer';
 import {ScrollView} from 'react-native-gesture-handler';
+import styled from 'styled-components/native';
 
 interface PrayerDetailsProps {}
 
@@ -23,22 +18,32 @@ export const PrayerDetails: React.FC<PrayerDetailsProps> = () => {
   return (
     <Container padding={0}>
       <ScrollView nestedScrollEnabled={true}>
-        <View
-          style={{
-            flexDirection: 'row',
-            padding: CONTAINER_HORIZONTAL_PADDING,
-            alignItems: 'center',
-          }}>
+        <MarkContainer>
           <Mark />
-          <Text style={styles.cardText}>Last prayed 8 min ago</Text>
-        </View>
+          <MarkText>Last prayed 8 min ago</MarkText>
+        </MarkContainer>
         <InfoBlock />
         <AddDescription prayerId={prayer.id} />
         <CommentsList prayerId={prayer.id} />
       </ScrollView>
-      <View style={{marginBottom: DEFAULT_SPACE}}>
+      <AddCommentContainer>
         <AddComment prayerId={prayer.id} />
-      </View>
+      </AddCommentContainer>
     </Container>
   );
 };
+
+const MarkContainer = styled.View`
+  flex-direction: row;
+  align-items: center;
+  padding: ${({theme}) => theme.spaces.container}px;
+`;
+
+const AddCommentContainer = styled.View`
+  margin-bottom: ${({theme}) => theme.spaces.default};
+`;
+
+const MarkText = styled.Text`
+  font-size: ${({theme}) => theme.size.primary};
+  color: ${({theme}) => theme.colors.text.primary};
+`;
