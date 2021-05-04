@@ -1,6 +1,5 @@
 import axios, {AxiosResponse} from 'axios';
 import {Config} from '../config';
-import {IColumn} from '../entities/Column';
 import {storage} from './storage';
 
 const httpClient = axios.create({
@@ -72,7 +71,7 @@ const columns = {
 
     return response.data;
   },
-  renameColumn: async (columnId: number, title: string) => {
+  renameColumn: async (columnId: string, title: string) => {
     const response: AxiosResponse = await httpClient.put(
       `/columns/${columnId}`,
       {
@@ -109,7 +108,7 @@ const prayers = {
     return response.data;
   },
 
-  getPrayerById: async (prayerId: number) => {
+  getPrayerById: async (prayerId: string) => {
     const response: AxiosResponse = await httpClient.get(
       `/prayers/${prayerId}`,
     );
@@ -117,26 +116,75 @@ const prayers = {
     return response.data;
   },
 
-  updatePrayerById: async (
-    prayerId: number,
-    title: string,
-    checked: string,
-  ) => {
+  setPrayerIsChecked: async (isChecked: boolean, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/prayers/${prayerId}`,
+      {
+        checked: isChecked,
+      },
+    );
+
+    return response.data;
+  },
+  editPrayerTitle: async (title: string, prayerId: string) => {
     const response: AxiosResponse = await httpClient.put(
       `/prayers/${prayerId}`,
       {
         title,
-        checked,
-        description: '',
       },
     );
 
     return response.data;
   },
 
-  deletePrayerById: async (prayerId: number) => {
+  deletePrayerById: async (prayerId: string) => {
     const response: AxiosResponse = await httpClient.delete(
       `/prayers/${prayerId}`,
+    );
+
+    return response.data;
+  },
+  updatePrayerDescription: async (description: string, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/prayers/${prayerId}`,
+      {
+        description,
+      },
+    );
+
+    return response.data;
+  },
+};
+
+const comments = {
+  getComments: async () => {
+    const response: AxiosResponse = await httpClient.get('/comments');
+
+    return response.data;
+  },
+  addComment: async (text: string, prayerId: string) => {
+    const response: AxiosResponse = await httpClient.post(
+      `/prayers/${prayerId}/comments`,
+      {
+        body: text,
+      },
+    );
+
+    return response.data;
+  },
+  editComment: async (text: string, commentId: string) => {
+    const response: AxiosResponse = await httpClient.put(
+      `/comments/${commentId}`,
+      {
+        body: text,
+      },
+    );
+
+    return response.data;
+  },
+  deleteComment: async (commentId: string) => {
+    const response: AxiosResponse = await httpClient.delete(
+      `/comments/${commentId}`,
     );
 
     return response.data;
@@ -147,4 +195,5 @@ export const Api = {
   auth,
   columns,
   prayers,
+  comments,
 };
